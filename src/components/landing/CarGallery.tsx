@@ -6,11 +6,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { getLocaleClient } from '@/lib/locale'
 
 const images = [
-  { src: '/t1.jpg', alt: 'Volkswagen Teramont 2024 — exterior frontal' },
-  { src: '/t2.jpg', alt: 'Volkswagen Teramont 2024 — exterior lateral' },
-  { src: '/t3.jpg', alt: 'Volkswagen Teramont 2024 — interior' },
-  { src: '/t4.jpg', alt: 'Volkswagen Teramont 2024 — maletero' },
-  { src: '/t5.jpg', alt: 'Volkswagen Teramont 2024 — detalle' },
+  { src: '/t1.jpg', alt: 'Volkswagen Teramont 2024 — exterior' },
+  { src: '/t2.jpg', alt: 'Volkswagen Teramont 2024 — interior' },
+  { src: '/t3.jpg', alt: 'Volkswagen Teramont 2024 — detalle' },
 ]
 
 export function CarGallery() {
