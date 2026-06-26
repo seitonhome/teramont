@@ -4,20 +4,20 @@ INSERT INTO locations (id, name, slug, active) VALUES
   ('22222222-2222-2222-2222-222222222222', 'Barranquilla', 'barranquilla', true),
   ('33333333-3333-3333-3333-333333333333', 'Barú', 'baru', true);
 
--- Seed routes (all durations in minutes, buffer 45 min, price 450000 COP)
+-- Seed routes (all durations in minutes, buffer 45 min)
 INSERT INTO routes (origin_location_id, destination_location_id, estimated_duration_minutes, buffer_minutes, base_price_cop, active) VALUES
   -- Cartagena → Barranquilla (150 min = 2h30)
   ('11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222', 150, 45, 450000, true),
   -- Barranquilla → Cartagena (150 min = 2h30)
   ('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', 150, 45, 450000, true),
   -- Cartagena → Barú (105 min = 1h45)
-  ('11111111-1111-1111-1111-111111111111', '33333333-3333-3333-3333-333333333333', 105, 45, 450000, true),
+  ('11111111-1111-1111-1111-111111111111', '33333333-3333-3333-3333-333333333333', 105, 45, 150000, true),
   -- Barú → Cartagena (105 min = 1h45)
-  ('33333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 105, 45, 450000, true),
+  ('33333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 105, 45, 150000, true),
   -- Barranquilla → Barú (225 min = 3h45)
-  ('22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333333', 225, 45, 450000, true),
+  ('22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333333', 225, 45, 550000, true),
   -- Barú → Barranquilla (225 min = 3h45)
-  ('33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', 225, 45, 450000, true);
+  ('33333333-3333-3333-3333-333333333333', '22222222-2222-2222-2222-222222222222', 225, 45, 550000, true);
 
 -- Seed vehicle
 INSERT INTO vehicle (id, name, plate_optional, model, capacity_passengers, capacity_luggage, default_location_id, active) VALUES
