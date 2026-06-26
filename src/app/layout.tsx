@@ -22,6 +22,19 @@ export const metadata: Metadata = {
     'Viajes privados premium entre Cartagena, Barú y Barranquilla en Volkswagen Teramont 2024. Reserva tu traslado con anticipación y viaja cómodo, tranquilo y sin compartir el vehículo.',
   keywords:
     'viajes privados Cartagena, traslado Barranquilla, transporte privado Barú, Volkswagen Teramont, viajes ejecutivos Colombia',
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    apple: '/apple-touch-icon.png',
+    other: [
+      { rel: 'android-chrome-192', url: '/android-chrome-192x192.png' },
+      { rel: 'android-chrome-512', url: '/android-chrome-512x512.png' },
+    ],
+  },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: 'Teramont Private Rides',
     description:
