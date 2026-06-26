@@ -28,16 +28,43 @@ export function ConfirmationClient() {
       return
     }
 
-    async function checkStatus() {
+    async function verifyAndLoad() {
       try {
-        const res = await fetch(`/api/bookings/${bookingId}`)
-        if (!res.ok) {
-          setStatus('failed')
-          return
+        // If we have a reference, verify payment status directly with Wompi
+        // This is the primary confirmation mechanism (no webhook needed)
+        if (reference) {
+          const verifyRes = await fetch(
+            `/api/payments/wompi/verify?reference=${encodeURIComponent(reference)}`
+          )
+          if (verifyRes.ok) {
+            const verifyData = await verifyRes.json()
+            const wompiStatus: string = verifyData.status
+
+            if (wompiStatus === 'APPROVED') {
+              // Fetch full booking details with location names
+              const res = await fetch(`/api/bookings/${bookingId}`)
+              if (res.ok) {
+                const data = await res.json()
+                setBooking(data.booking)
+                setOriginName(data.origin_name || '')
+                setDestinationName(data.destination_name || '')
+              }
+              setStatus('confirmed')
+              return
+            }
+
+            if (wompiStatus === 'DECLINED' || wompiStatus === 'ERROR' || wompiStatus === 'VOIDED') {
+              setStatus('failed')
+              return
+            }
+          }
         }
+
+        // Fallback: read booking status from DB
+        const res = await fetch(`/api/bookings/${bookingId}`)
+        if (!res.ok) { setStatus('failed'); return }
         const data = await res.json()
         const b: Booking = data.booking
-
         setBooking(b)
         setOriginName(data.origin_name || '')
         setDestinationName(data.destination_name || '')
@@ -54,11 +81,8 @@ export function ConfirmationClient() {
       }
     }
 
-    checkStatus()
-    // Poll for a few seconds in case webhook hasn't arrived yet
-    const timer = setTimeout(checkStatus, 4000)
-    return () => clearTimeout(timer)
-  }, [bookingId])
+    verifyAndLoad()
+  }, [bookingId, reference])
 
   if (status === 'loading') {
     return (
