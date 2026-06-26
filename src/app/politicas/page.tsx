@@ -6,7 +6,15 @@ import { translations } from '@/lib/i18n'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Políticas — Teramont Private Rides',
+  title: 'Políticas y Términos',
+  description:
+    'Políticas de cancelación, reembolso, privacidad y tratamiento de datos personales (Ley 1581/2012) de Teramont Private Rides.',
+  alternates: { canonical: 'https://teramont.seitonhome.com/politicas' },
+  openGraph: {
+    title: 'Políticas y Términos | Teramont Private Rides',
+    description: 'Consulta las condiciones del servicio, cancelaciones, reembolsos y política de privacidad.',
+    url: 'https://teramont.seitonhome.com/politicas',
+  },
 }
 
 export default async function PoliticasPage() {

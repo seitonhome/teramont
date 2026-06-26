@@ -17,12 +17,65 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 })
 
+const BASE = 'https://teramont.seitonhome.com'
+
 export const metadata: Metadata = {
-  title: 'Teramont Private Rides — Viajes privados premium',
+  metadataBase: new URL(BASE),
+
+  title: {
+    template: '%s | Teramont Private Rides',
+    default: 'Teramont Private Rides — Traslados Privados Cartagena · Barú · Barranquilla',
+  },
   description:
-    'Viajes privados premium entre Cartagena, Barú y Barranquilla en Volkswagen Teramont 2024. Reserva tu traslado con anticipación y viaja cómodo, tranquilo y sin compartir el vehículo.',
-  keywords:
-    'viajes privados Cartagena, traslado Barranquilla, transporte privado Barú, Volkswagen Teramont, viajes ejecutivos Colombia',
+    'Traslados privados premium en Volkswagen Teramont 2024 entre Cartagena, Barú y Barranquilla. Solo tú y tu grupo, puerta a puerta, con confirmación inmediata y pago seguro.',
+
+  keywords: [
+    'transporte privado Cartagena',
+    'traslado privado Barranquilla',
+    'transporte privado Barú',
+    'traslado Cartagena Barranquilla',
+    'van privada Cartagena Colombia',
+    'transfer privado costa Caribe Colombia',
+    'Volkswagen Teramont transporte',
+    'viaje privado Cartagena turistas',
+    'private transfer Cartagena Colombia',
+    'private transport Caribbean coast Colombia',
+    'traslado aeropuerto Cartagena',
+    'transporte ejecutivo Cartagena',
+  ],
+
+  authors: [{ name: 'Teramont Private Rides' }],
+  creator: 'Teramont Private Rides',
+  publisher: 'Teramont Private Rides',
+
+  alternates: {
+    canonical: '/',
+  },
+
+  openGraph: {
+    type: 'website',
+    url: BASE,
+    siteName: 'Teramont Private Rides',
+    locale: 'es_CO',
+    title: 'Teramont Private Rides — Traslados Privados en la Costa Caribe',
+    description:
+      'Muévete entre Cartagena, Barú y Barranquilla en Volkswagen Teramont 2024. Privado, puntual y con confirmación inmediata.',
+    images: [
+      {
+        url: '/t1.jpg',
+        alt: 'Volkswagen Teramont 2024 — Teramont Private Rides',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Teramont Private Rides — Traslados Privados Costa Caribe',
+    description:
+      'Traslados privados entre Cartagena, Barú y Barranquilla. Volkswagen Teramont 2024. Reserva online en minutos.',
+    images: ['/t1.jpg'],
+  },
+
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -36,11 +89,12 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/site.webmanifest',
-  openGraph: {
-    title: 'Teramont Private Rides',
-    description:
-      'Viajes privados premium entre Cartagena, Barú y Barranquilla.',
-    type: 'website',
+
+  other: {
+    'geo.region': 'CO-BOL',
+    'geo.placename': 'Cartagena de Indias, Bolívar, Colombia',
+    'geo.position': '10.391049;-75.479426',
+    'ICBM': '10.391049, -75.479426',
   },
 }
 
