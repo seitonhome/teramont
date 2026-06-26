@@ -23,13 +23,14 @@ async function getPricingData() {
       .select('base_price_cop')
       .eq('active', true)
       .order('base_price_cop', { ascending: true })
-      .limit(1)
 
-    const basePrice = routes?.[0]?.base_price_cop ? Number(routes[0].base_price_cop) : 450000
+    const prices = routes?.map((r) => Number(r.base_price_cop)) || []
+    const minPrice = prices.length > 0 ? Math.min(...prices) : 150000
+    const maxPrice = prices.length > 0 ? Math.max(...prices) : 550000
 
-    return { basePrice, depositPct }
+    return { minPrice, maxPrice, depositPct }
   } catch {
-    return { basePrice: 450000, depositPct: 50 }
+    return { minPrice: 150000, maxPrice: 550000, depositPct: 50 }
   }
 }
 
@@ -37,9 +38,8 @@ export async function PricingBanner() {
   const locale = await getLocale()
   const p = translations[locale].pricing
 
-  const { basePrice, depositPct } = await getPricingData()
-  const depositAmount = Math.round(basePrice * (depositPct / 100))
-  const balanceAmount = basePrice - depositAmount
+  const { minPrice, maxPrice, depositPct } = await getPricingData()
+  const minDeposit = Math.round(minPrice * (depositPct / 100))
 
   return (
     <section className="py-24 lg:py-32 bg-white">
@@ -51,39 +51,54 @@ export async function PricingBanner() {
               <p className="text-gold text-xs tracking-[0.4em] uppercase font-medium mb-4">
                 {p.sectionLabel}
               </p>
-              <h2
-                className="text-4xl lg:text-5xl font-light text-foreground mb-2"
-                style={{ fontFamily: 'var(--font-display)' }}
-              >
-                {formatCOP(basePrice)}
-              </h2>
-              <p className="text-muted-foreground mb-1">{p.perVehicle}</p>
+
+              {/* Price range */}
+              <div className="mb-2">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{p.from}</p>
+                <h2
+                  className="text-5xl lg:text-6xl font-light text-foreground"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  {formatCOP(minPrice)}
+                </h2>
+              </div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-8 h-px bg-gold/40" />
+                <p className="text-sm text-muted-foreground">
+                  {p.to} <span className="font-semibold text-foreground">{formatCOP(maxPrice)}</span>
+                </p>
+              </div>
+              <p className="text-muted-foreground text-sm mb-1">{p.perVehicle}</p>
               <p className="text-sm text-gold font-medium mb-8">
                 {p.depositLabel} {depositPct}% {p.depositSuffix}
               </p>
 
+              {/* Deposit info */}
               <div className="space-y-2 mb-8 p-4 rounded-lg bg-white border border-border">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{p.deposit}</span>
-                  <span className="font-semibold text-foreground">{formatCOP(depositAmount)}</span>
+                  <span className="text-muted-foreground">{p.depositFrom}</span>
+                  <span className="font-semibold text-foreground">{formatCOP(minDeposit)}</span>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{p.balance}</span>
-                  <span className="font-semibold text-foreground">{formatCOP(balanceAmount)}</span>
-                </div>
-                <div className="h-px bg-border my-2" />
-                <div className="flex justify-between text-sm font-semibold">
-                  <span>{p.total}</span>
-                  <span>{formatCOP(basePrice)}</span>
-                </div>
+                <div className="h-px bg-border" />
+                <p className="text-xs text-muted-foreground">
+                  {p.total}: {formatCOP(minPrice)} — {formatCOP(maxPrice)}
+                </p>
               </div>
 
-              <Button asChild size="lg" className="w-full bg-gold hover:bg-gold/90 text-white h-13 text-base">
-                <Link href="/reservar">
-                  {p.cta} {formatCOP(depositAmount)}
-                  <ArrowRight size={18} />
-                </Link>
-              </Button>
+              <div className="flex flex-col gap-3">
+                <Button asChild size="lg" className="w-full bg-gold hover:bg-gold/90 text-white h-13 text-base">
+                  <Link href="/reservar">
+                    {p.cta} {formatCOP(minDeposit)}
+                    <ArrowRight size={18} />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="w-full h-11">
+                  <Link href="/rutas">
+                    {p.viewRoutes}
+                    <ArrowRight size={16} />
+                  </Link>
+                </Button>
+              </div>
             </div>
 
             {/* Right */}
