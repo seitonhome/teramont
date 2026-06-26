@@ -15,7 +15,7 @@ const reviews = {
     {
       name: 'Carlos M.',
       location: 'Bogotá',
-      date: 'abril 2025',
+      date: 'enero 2026',
       rating: 5,
       text: 'Todo perfecto. Reservé por la página sin problema y el pago fue rápido. Llegaron a la hora exacta 👌',
     },
@@ -36,7 +36,7 @@ const reviews = {
     {
       name: 'Laura T.',
       location: 'Cali',
-      date: 'mayo 2025',
+      date: 'marzo 2026',
       rating: 5,
       text: 'La verdad no esperaba que fuera tan fácil reservar. El proceso online rapidísimo y el viaje sin ningún contratiempo.',
     },
@@ -52,7 +52,7 @@ const reviews = {
     {
       name: 'Carlos M.',
       location: 'Bogotá',
-      date: 'April 2025',
+      date: 'January 2026',
       rating: 5,
       text: 'Everything perfect. Booked through the website without any issues and the payment was quick. They arrived right on time 👌',
     },
@@ -73,7 +73,7 @@ const reviews = {
     {
       name: 'Laura T.',
       location: 'Cali',
-      date: 'May 2025',
+      date: 'March 2026',
       rating: 5,
       text: "Honestly didn't expect booking to be this easy. Super fast online process and the trip went without a hitch.",
     },

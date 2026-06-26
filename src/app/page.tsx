@@ -9,6 +9,7 @@ import { HowItWorks } from '@/components/landing/HowItWorks'
 import { PricingBanner } from '@/components/landing/PricingBanner'
 import { FAQSection } from '@/components/landing/FAQ'
 import { Footer } from '@/components/landing/Footer'
+import { CarGallery } from '@/components/landing/CarGallery'
 
 const BASE = 'https://teramont.seitonhome.com'
 
@@ -173,6 +174,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <Benefits />
+        <CarGallery />
         <Routes />
         <Reviews />
         <HowItWorks />

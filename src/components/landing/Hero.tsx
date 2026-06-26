@@ -31,9 +31,11 @@ export async function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Premium badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 border border-gold/30 rounded-full bg-gold/5 text-gold text-xs tracking-[0.3em] uppercase font-medium">
-          <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
-          {h.badge}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 border border-gold/30 rounded-full bg-gold/5 text-gold text-xs tracking-widest uppercase font-medium max-w-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse flex-shrink-0" />
+            <span>{h.badge}</span>
+          </div>
         </div>
 
         {/* Main headline */}
