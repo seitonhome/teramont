@@ -92,13 +92,13 @@ export default function AdminBookingsPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-stone-100">
+      <div className="flex min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8 overflow-auto">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold text-stone-900">
+            <h1 className="text-2xl font-semibold text-foreground">
               Reservas
-              <span className="ml-2 text-sm font-normal text-stone-400">
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
                 ({filtered.length})
               </span>
             </h1>
@@ -116,7 +116,7 @@ export default function AdminBookingsPage() {
           {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-3 mb-5">
             <div className="relative flex-1">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Buscar por código, nombre, email o teléfono..."
                 value={search}
@@ -140,23 +140,23 @@ export default function AdminBookingsPage() {
             </select>
           </div>
 
-          <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
             {loading ? (
               <div className="flex items-center justify-center py-16">
-                <Loader2 size={24} className="animate-spin text-stone-400" />
+                <Loader2 size={24} className="animate-spin text-muted-foreground" />
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-stone-100 bg-stone-50">
-                      <th className="text-left px-4 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Código</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Cliente</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Ruta</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Fecha viaje</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Precio</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Estado</th>
-                      <th className="text-left px-4 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Acciones</th>
+                    <tr className="border-b border-slate-100 bg-slate-50">
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Código</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Ruta</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha viaje</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Precio</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                      <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-100">
@@ -169,26 +169,26 @@ export default function AdminBookingsPage() {
                       )
 
                       return (
-                        <tr key={b.id} className="hover:bg-stone-50 transition-colors">
-                          <td className="px-4 py-3 font-mono text-xs text-stone-600 whitespace-nowrap">
+                        <tr key={b.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="px-4 py-3 font-mono text-xs text-muted-foreground whitespace-nowrap">
                             {b.booking_code}
                           </td>
                           <td className="px-4 py-3">
-                            <p className="font-medium text-stone-900">{b.customer_name}</p>
-                            <p className="text-xs text-stone-500">{b.customer_phone}</p>
-                            <p className="text-xs text-stone-400">{b.customer_email}</p>
+                            <p className="font-medium text-foreground">{b.customer_name}</p>
+                            <p className="text-xs text-muted-foreground">{b.customer_phone}</p>
+                            <p className="text-xs text-muted-foreground">{b.customer_email}</p>
                           </td>
-                          <td className="px-4 py-3 text-stone-600 whitespace-nowrap">
+                          <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                             {b.origin?.name} → {b.destination?.name}
-                            <p className="text-xs text-stone-400">
+                            <p className="text-xs text-muted-foreground">
                               {b.passengers_count}p · {b.luggage_count} maletas
                             </p>
                           </td>
-                          <td className="px-4 py-3 text-stone-600 text-xs whitespace-nowrap">
+                          <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">
                             {formatDatetimeBogota(b.pickup_datetime)}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap">
-                            <p className="font-medium text-stone-900">{formatCOP(b.total_price_cop)}</p>
+                            <p className="font-medium text-foreground">{formatCOP(b.total_price_cop)}</p>
                             {Number(b.balance_amount_cop) > 0 && b.status !== 'PAID_FULL' && (
                               <p className="text-xs text-amber-600 font-medium">
                                 Saldo: {formatCOP(b.balance_amount_cop)}
@@ -201,7 +201,7 @@ export default function AdminBookingsPage() {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-1">
                               {actionLoading === b.id ? (
-                                <Loader2 size={14} className="animate-spin text-stone-400" />
+                                <Loader2 size={14} className="animate-spin text-muted-foreground" />
                               ) : (
                                 <>
                                   {/* Marcar completado */}
@@ -274,7 +274,7 @@ export default function AdminBookingsPage() {
                     })}
                     {filtered.length === 0 && !loading && (
                       <tr>
-                        <td colSpan={7} className="px-4 py-10 text-center text-stone-400 text-sm">
+                        <td colSpan={7} className="px-4 py-10 text-center text-muted-foreground text-sm">
                           No hay reservas con los filtros seleccionados
                         </td>
                       </tr>
@@ -285,7 +285,7 @@ export default function AdminBookingsPage() {
             )}
           </div>
 
-          <p className="text-xs text-stone-400 mt-3">
+          <p className="text-xs text-muted-foreground mt-3">
             El CSV incluye todos los campos de la reserva en formato compatible con Excel.
           </p>
         </main>

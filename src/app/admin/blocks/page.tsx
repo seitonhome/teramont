@@ -131,11 +131,11 @@ export default function AdminBlocksPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-stone-100">
+      <div className="flex min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold text-stone-900">Bloqueos del vehículo</h1>
+            <h1 className="text-2xl font-semibold text-foreground">Bloqueos del vehículo</h1>
             <Button onClick={() => setShowForm(!showForm)} className="bg-gold hover:bg-gold/90 text-white">
               <Plus size={16} />
               Nuevo bloqueo
@@ -144,8 +144,8 @@ export default function AdminBlocksPage() {
 
           {/* Create form */}
           {showForm && (
-            <div className="bg-white rounded-xl border border-stone-200 p-6 mb-6">
-              <h2 className="font-semibold text-stone-900 mb-4">Crear bloqueo</h2>
+            <div className="bg-white rounded-xl border border-slate-200 p-6 mb-6">
+              <h2 className="font-semibold text-foreground mb-4">Crear bloqueo</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                 <div>
                   <Label className="mb-2 block text-sm">Tipo</Label>
@@ -249,36 +249,36 @@ export default function AdminBlocksPage() {
           )}
 
           {/* List */}
-          <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 size={24} className="animate-spin text-stone-400" />
+                <Loader2 size={24} className="animate-spin text-muted-foreground" />
               </div>
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-stone-100 bg-stone-50">
-                    <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Tipo</th>
-                    <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Ruta</th>
-                    <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Inicio</th>
-                    <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Fin</th>
-                    <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Motivo</th>
+                  <tr className="border-b border-slate-100 bg-slate-50">
+                    <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Tipo</th>
+                    <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Ruta</th>
+                    <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Inicio</th>
+                    <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Fin</th>
+                    <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Motivo</th>
                     <th className="px-5 py-3" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100">
                   {blocks.map((b) => (
-                    <tr key={b.id} className="hover:bg-stone-50">
+                    <tr key={b.id} className="hover:bg-slate-50">
                       <td className="px-5 py-3">
                         <Badge variant="secondary">{BLOCK_TYPE_LABELS[b.block_type] || b.block_type}</Badge>
                       </td>
-                      <td className="px-5 py-3 text-stone-600">
+                      <td className="px-5 py-3 text-muted-foreground">
                         {b.origin?.name || '—'}
                         {b.destination?.name ? ` → ${b.destination.name}` : ''}
                       </td>
-                      <td className="px-5 py-3 text-stone-600 text-xs">{formatBlockTime(b.starts_at)}</td>
-                      <td className="px-5 py-3 text-stone-600 text-xs">{formatBlockTime(b.ends_at)}</td>
-                      <td className="px-5 py-3 text-stone-500 text-xs">{b.reason || '—'}</td>
+                      <td className="px-5 py-3 text-muted-foreground text-xs">{formatBlockTime(b.starts_at)}</td>
+                      <td className="px-5 py-3 text-muted-foreground text-xs">{formatBlockTime(b.ends_at)}</td>
+                      <td className="px-5 py-3 text-muted-foreground text-xs">{b.reason || '—'}</td>
                       <td className="px-5 py-3">
                         <button
                           onClick={() => deleteBlock(b.id)}
@@ -291,7 +291,7 @@ export default function AdminBlocksPage() {
                   ))}
                   {blocks.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="px-5 py-10 text-center text-stone-400 text-sm">
+                      <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground text-sm">
                         No hay bloqueos activos
                       </td>
                     </tr>

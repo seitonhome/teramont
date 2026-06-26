@@ -10,13 +10,10 @@ export default function PoliticasPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-background pt-20">
-        <div className="bg-stone-950 text-white py-14">
+        <div className="text-white py-14" style={{ background: 'linear-gradient(135deg, #060F1E 0%, #0A1628 100%)' }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <p className="text-gold text-xs tracking-[0.4em] uppercase font-medium mb-4">Legal</p>
-            <h1
-              className="text-4xl font-light text-white"
-              style={{ fontFamily: 'var(--font-display)' }}
-            >
+            <h1 className="text-4xl font-light text-white" style={{ fontFamily: 'var(--font-display)' }}>
               Políticas del servicio
             </h1>
           </div>

@@ -132,10 +132,10 @@ export default function AdminSettingsPage() {
   if (loading) {
     return (
       <AdminGuard>
-        <div className="flex min-h-screen bg-stone-100">
+        <div className="flex min-h-screen bg-slate-100">
           <AdminSidebar />
           <main className="flex-1 flex items-center justify-center">
-            <Loader2 size={28} className="animate-spin text-stone-400" />
+            <Loader2 size={28} className="animate-spin text-muted-foreground" />
           </main>
         </div>
       </AdminGuard>
@@ -144,11 +144,11 @@ export default function AdminSettingsPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-stone-100">
+      <div className="flex min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold text-stone-900">Configuración</h1>
+            <h1 className="text-2xl font-semibold text-foreground">Configuración</h1>
             <Button
               onClick={saveSettings}
               disabled={saving}
@@ -161,8 +161,8 @@ export default function AdminSettingsPage() {
 
           <div className="space-y-6 max-w-2xl">
             {/* Text/number settings */}
-            <div className="bg-white rounded-xl border border-stone-200 p-6">
-              <h2 className="font-semibold text-stone-900 mb-5">Parámetros del negocio</h2>
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <h2 className="font-semibold text-foreground mb-5">Parámetros del negocio</h2>
               <div className="space-y-5">
                 {EDITABLE_SETTINGS.map((s) => (
                   <div key={s.key}>
@@ -176,7 +176,7 @@ export default function AdminSettingsPage() {
                       className="max-w-xs"
                     />
                     {s.hint && (
-                      <p className="text-xs text-stone-400 mt-1">{s.hint}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{s.hint}</p>
                     )}
                   </div>
                 ))}
@@ -184,8 +184,8 @@ export default function AdminSettingsPage() {
             </div>
 
             {/* Select settings */}
-            <div className="bg-white rounded-xl border border-stone-200 p-6">
-              <h2 className="font-semibold text-stone-900 mb-5">Comportamiento del vehículo</h2>
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <h2 className="font-semibold text-foreground mb-5">Comportamiento del vehículo</h2>
               <div className="space-y-5">
                 {SELECT_SETTINGS.map((s) => (
                   <div key={s.key}>
@@ -208,7 +208,7 @@ export default function AdminSettingsPage() {
                       </SelectContent>
                     </Select>
                     {s.hint && (
-                      <p className="text-xs text-stone-400 mt-1">{s.hint}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{s.hint}</p>
                     )}
                   </div>
                 ))}

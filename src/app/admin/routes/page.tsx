@@ -78,34 +78,34 @@ export default function AdminRoutesPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-stone-100">
+      <div className="flex min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8">
-          <h1 className="text-2xl font-semibold text-stone-900 mb-6">Rutas y precios</h1>
+          <h1 className="text-2xl font-semibold text-foreground mb-6">Rutas y precios</h1>
 
-          <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
             {loading ? (
               <div className="flex items-center justify-center py-16">
-                <Loader2 size={24} className="animate-spin text-stone-400" />
+                <Loader2 size={24} className="animate-spin text-muted-foreground" />
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-stone-100 bg-stone-50">
-                      <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Ruta</th>
-                      <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Duración</th>
-                      <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Buffer</th>
-                      <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Precio (COP)</th>
-                      <th className="text-left px-5 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Acciones</th>
+                    <tr className="border-b border-slate-100 bg-slate-50">
+                      <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Ruta</th>
+                      <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Duración</th>
+                      <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Buffer</th>
+                      <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Precio (COP)</th>
+                      <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-100">
                     {routes.map((r) => {
                       const isEditing = editingId === r.id
                       return (
-                        <tr key={r.id} className="hover:bg-stone-50">
-                          <td className="px-5 py-4 font-medium text-stone-900">
+                        <tr key={r.id} className="hover:bg-slate-50">
+                          <td className="px-5 py-4 font-medium text-foreground">
                             {r.origin?.name} → {r.destination?.name}
                           </td>
                           <td className="px-5 py-4">
@@ -120,7 +120,7 @@ export default function AdminRoutesPage() {
                                 min="30"
                               />
                             ) : (
-                              <span className="text-stone-600">
+                              <span className="text-muted-foreground">
                                 {minutesToHoursLabel(r.estimated_duration_minutes)}
                               </span>
                             )}
@@ -137,7 +137,7 @@ export default function AdminRoutesPage() {
                                 min="0"
                               />
                             ) : (
-                              <span className="text-stone-600">{r.buffer_minutes} min</span>
+                              <span className="text-muted-foreground">{r.buffer_minutes} min</span>
                             )}
                           </td>
                           <td className="px-5 py-4">
@@ -153,7 +153,7 @@ export default function AdminRoutesPage() {
                                 step="1000"
                               />
                             ) : (
-                              <span className="font-semibold text-stone-900">
+                              <span className="font-semibold text-foreground">
                                 {formatCOP(r.base_price_cop)}
                               </span>
                             )}
@@ -200,7 +200,7 @@ export default function AdminRoutesPage() {
             )}
           </div>
 
-          <p className="text-xs text-stone-400 mt-4">
+          <p className="text-xs text-muted-foreground mt-4">
             Los cambios de precio aplican solo para nuevas reservas.
           </p>
         </main>

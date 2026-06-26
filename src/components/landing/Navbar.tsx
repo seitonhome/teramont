@@ -4,17 +4,31 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { cn } from '@/lib/utils'
+import { getLocaleClient } from '@/lib/locale'
+import { translations } from '@/lib/i18n'
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [locale, setLocale] = useState<'es' | 'en'>('es')
 
   useEffect(() => {
+    setLocale(getLocaleClient())
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  const nav = translations[locale].nav
+
+  const navLinks = [
+    { href: '/#rutas', label: nav.routes },
+    { href: '/#como-funciona', label: nav.howItWorks },
+    { href: '/faq', label: nav.faq },
+    { href: '/politicas', label: nav.policies },
+  ]
 
   return (
     <header
@@ -41,7 +55,7 @@ export function Navbar() {
             <span
               className={cn(
                 'text-xs tracking-[0.3em] uppercase font-medium transition-colors',
-                scrolled ? 'text-gold' : 'text-gold-light'
+                scrolled ? 'text-gold' : 'text-gold'
               )}
             >
               Private Rides
@@ -49,13 +63,8 @@ export function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            {[
-              { href: '/#rutas', label: 'Rutas' },
-              { href: '/#como-funciona', label: 'Cómo funciona' },
-              { href: '/faq', label: 'FAQ' },
-              { href: '/politicas', label: 'Políticas' },
-            ].map((item) => (
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+            {navLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -69,8 +78,11 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Right side: lang switcher + CTA */}
+          <div className="hidden md:flex items-center gap-4">
+            <span className={cn('transition-colors', scrolled ? 'text-foreground/50' : 'text-white/60')}>
+              <LanguageSwitcher />
+            </span>
             <Button
               asChild
               size="default"
@@ -81,11 +93,11 @@ export function Navbar() {
                   : 'bg-white text-foreground hover:bg-white/90'
               )}
             >
-              <Link href="/reservar">Reservar viaje</Link>
+              <Link href="/reservar">{nav.book}</Link>
             </Button>
           </div>
 
-          {/* Mobile menu toggle */}
+          {/* Mobile toggle */}
           <button
             className={cn(
               'md:hidden p-2 transition-colors',
@@ -103,12 +115,7 @@ export function Navbar() {
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-border shadow-lg">
           <div className="px-4 py-6 space-y-4">
-            {[
-              { href: '/#rutas', label: 'Rutas' },
-              { href: '/#como-funciona', label: 'Cómo funciona' },
-              { href: '/faq', label: 'FAQ' },
-              { href: '/politicas', label: 'Políticas' },
-            ].map((item) => (
+            {navLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -118,10 +125,13 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
-            <div className="pt-2">
+            <div className="pt-1 pb-1">
+              <LanguageSwitcher />
+            </div>
+            <div className="pt-1">
               <Button asChild className="w-full">
                 <Link href="/reservar" onClick={() => setMobileOpen(false)}>
-                  Reservar viaje
+                  {nav.book}
                 </Link>
               </Button>
             </div>

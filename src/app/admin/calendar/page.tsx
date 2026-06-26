@@ -29,7 +29,7 @@ const STATUS_COLORS: Record<string, string> = {
   CONFIRMED: 'bg-emerald-100 border-emerald-300 text-emerald-800',
   PAID_FULL: 'bg-emerald-200 border-emerald-400 text-emerald-900',
   PENDING_PAYMENT: 'bg-amber-100 border-amber-300 text-amber-800',
-  COMPLETED: 'bg-stone-100 border-stone-300 text-stone-600',
+  COMPLETED: 'bg-slate-100 border-stone-300 text-muted-foreground',
   CANCELLED_BY_ADMIN: 'bg-red-100 border-red-200 text-red-600',
   PAYMENT_FAILED: 'bg-red-50 border-red-200 text-red-500',
 }
@@ -85,7 +85,7 @@ export default function AdminCalendarPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-stone-100">
+      <div className="flex min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8 overflow-auto">
           {/* Header */}
@@ -99,7 +99,7 @@ export default function AdminCalendarPage() {
               >
                 <ChevronLeft size={16} />
               </Button>
-              <h1 className="text-xl font-semibold text-stone-900">
+              <h1 className="text-xl font-semibold text-foreground">
                 {format(currentDate, "EEEE d 'de' MMMM 'de' yyyy")}
               </h1>
               <Button
@@ -122,14 +122,14 @@ export default function AdminCalendarPage() {
 
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <Loader2 size={24} className="animate-spin text-stone-400" />
+              <Loader2 size={24} className="animate-spin text-muted-foreground" />
             </div>
           ) : (
             <div className="grid lg:grid-cols-3 gap-6">
               {/* Timeline */}
-              <div className="lg:col-span-2 bg-white rounded-xl border border-stone-200 overflow-hidden">
-                <div className="px-5 py-4 border-b border-stone-100">
-                  <p className="font-semibold text-stone-900">Línea de tiempo del vehículo</p>
+              <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 overflow-hidden">
+                <div className="px-5 py-4 border-b border-slate-100">
+                  <p className="font-semibold text-foreground">Línea de tiempo del vehículo</p>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -141,7 +141,7 @@ export default function AdminCalendarPage() {
                         {HOURS.map((h) => (
                           <div
                             key={h}
-                            className="flex-1 text-xs text-stone-400 text-center border-l border-stone-100"
+                            className="flex-1 text-xs text-muted-foreground text-center border-l border-slate-100"
                           >
                             {formatHour(h)}
                           </div>
@@ -151,10 +151,10 @@ export default function AdminCalendarPage() {
 
                     {/* Bookings row */}
                     <div className="flex items-center mb-2">
-                      <div className="w-16 flex-shrink-0 text-xs text-stone-500 font-medium pr-2">
+                      <div className="w-16 flex-shrink-0 text-xs text-muted-foreground font-medium pr-2">
                         Reservas
                       </div>
-                      <div className="flex-1 relative h-12 bg-stone-50 rounded border border-stone-100">
+                      <div className="flex-1 relative h-12 bg-slate-50 rounded border border-slate-100">
                         {bookings
                           .filter(b => b.status === 'CONFIRMED' || b.status === 'PAID_FULL' || b.status === 'PENDING_PAYMENT')
                           .map((b) => {
@@ -189,10 +189,10 @@ export default function AdminCalendarPage() {
                     {/* Blocks row */}
                     {todayBlocks.length > 0 && (
                       <div className="flex items-center">
-                        <div className="w-16 flex-shrink-0 text-xs text-stone-500 font-medium pr-2">
+                        <div className="w-16 flex-shrink-0 text-xs text-muted-foreground font-medium pr-2">
                           Bloqueos
                         </div>
-                        <div className="flex-1 relative h-8 bg-stone-50 rounded border border-stone-100">
+                        <div className="flex-1 relative h-8 bg-slate-50 rounded border border-slate-100">
                           {todayBlocks.map((b) => {
                             const startH = toZonedTime(new Date(b.starts_at), TIMEZONE).getHours()
                             const startM = toZonedTime(new Date(b.starts_at), TIMEZONE).getMinutes()
@@ -213,7 +213,7 @@ export default function AdminCalendarPage() {
                                 style={{ left: `${left}%`, width: `${width}%` }}
                                 title={b.reason || b.block_type}
                               >
-                                <span className="truncate text-stone-700">{b.reason || b.block_type}</span>
+                                <span className="truncate text-foreground/80">{b.reason || b.block_type}</span>
                               </div>
                             )
                           })}
@@ -226,21 +226,21 @@ export default function AdminCalendarPage() {
 
               {/* Day summary */}
               <div className="space-y-4">
-                <div className="bg-white rounded-xl border border-stone-200 p-5">
-                  <p className="font-semibold text-stone-900 mb-4">
+                <div className="bg-white rounded-xl border border-slate-200 p-5">
+                  <p className="font-semibold text-foreground mb-4">
                     Reservas del día ({bookings.length})
                   </p>
                   <div className="space-y-3">
                     {bookings.length === 0 ? (
-                      <p className="text-sm text-stone-400">Sin reservas para este día</p>
+                      <p className="text-sm text-muted-foreground">Sin reservas para este día</p>
                     ) : (
                       bookings.map((b) => (
                         <div
                           key={b.id}
-                          className="p-3 rounded-lg border border-stone-100 bg-stone-50"
+                          className="p-3 rounded-lg border border-slate-100 bg-slate-50"
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-mono text-stone-500">{b.booking_code}</span>
+                            <span className="text-xs font-mono text-muted-foreground">{b.booking_code}</span>
                             <Badge
                               variant={
                                 b.status === 'CONFIRMED' || b.status === 'PAID_FULL'
@@ -259,14 +259,14 @@ export default function AdminCalendarPage() {
                                 : b.status}
                             </Badge>
                           </div>
-                          <p className="text-sm font-medium text-stone-900">{b.customer_name}</p>
-                          <p className="text-xs text-stone-600">
+                          <p className="text-sm font-medium text-foreground">{b.customer_name}</p>
+                          <p className="text-xs text-muted-foreground">
                             {b.origin?.name} → {b.destination?.name}
                           </p>
-                          <p className="text-xs text-stone-500 mt-1">
+                          <p className="text-xs text-muted-foreground mt-1">
                             {formatTimeBogota(b.pickup_datetime)} → {formatTimeBogota(b.vehicle_release_datetime)}
                           </p>
-                          <p className="text-xs font-semibold text-stone-900 mt-1">
+                          <p className="text-xs font-semibold text-foreground mt-1">
                             {formatCOP(b.total_price_cop)}
                           </p>
                         </div>
@@ -276,13 +276,13 @@ export default function AdminCalendarPage() {
                 </div>
 
                 {todayBlocks.length > 0 && (
-                  <div className="bg-white rounded-xl border border-stone-200 p-5">
-                    <p className="font-semibold text-stone-900 mb-3">Bloqueos ({todayBlocks.length})</p>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5">
+                    <p className="font-semibold text-foreground mb-3">Bloqueos ({todayBlocks.length})</p>
                     <div className="space-y-2">
                       {todayBlocks.map((b) => (
-                        <div key={b.id} className="p-2.5 rounded-lg bg-stone-100 text-xs">
-                          <p className="font-medium text-stone-700">{b.block_type.replace('_', ' ')}</p>
-                          {b.reason && <p className="text-stone-500">{b.reason}</p>}
+                        <div key={b.id} className="p-2.5 rounded-lg bg-slate-100 text-xs">
+                          <p className="font-medium text-foreground/80">{b.block_type.replace('_', ' ')}</p>
+                          {b.reason && <p className="text-muted-foreground">{b.reason}</p>}
                         </div>
                       ))}
                     </div>

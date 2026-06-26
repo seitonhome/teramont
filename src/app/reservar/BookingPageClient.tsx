@@ -15,7 +15,7 @@ export function BookingPageClient() {
       <Navbar />
       <main className="min-h-screen bg-background pt-20 lg:pt-24">
         {/* Header */}
-        <div className="bg-stone-950 text-white py-14 lg:py-20">
+        <div className="text-white py-14 lg:py-20" style={{ background: 'linear-gradient(135deg, #060F1E 0%, #0A1628 100%)' }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gold text-xs tracking-[0.4em] uppercase font-medium mb-4">
               Reserva tu viaje

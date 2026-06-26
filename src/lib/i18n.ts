@@ -1,0 +1,436 @@
+export type Locale = 'es' | 'en'
+
+export const defaultLocale: Locale = 'es'
+
+export const translations = {
+  es: {
+    nav: {
+      routes: 'Rutas',
+      howItWorks: 'Cómo funciona',
+      faq: 'FAQ',
+      policies: 'Políticas',
+      book: 'Reservar viaje',
+    },
+    hero: {
+      badge: 'Costa Caribe Colombiana',
+      title1: 'Viajes privados',
+      titleAccent: 'premium',
+      title2: 'desde Cartagena',
+      subtitle: 'Muévete entre',
+      subtitleCities: 'Cartagena, Barú y Barranquilla',
+      subtitleEnd: 'en una Volkswagen Teramont, con comodidad, privacidad y tranquilidad desde el primer minuto.',
+      tagline: 'Tu ruta · Tu horario · Tu espacio',
+      cta: 'Reservar mi viaje',
+      ctaRoutes: 'Ver rutas',
+      trust: ['Vehículo exclusivo', 'Sin compartir', 'Pago seguro', 'Confirmación inmediata'],
+      scrollLabel: 'Explorar',
+    },
+    benefits: {
+      sectionLabel: 'Por qué elegirnos',
+      title: 'La diferencia de viajar privado',
+      subtitle: 'No es un taxi. No es un bus. Es tu espacio, tu tiempo y tu comodidad.',
+      items: [
+        { title: 'Solo tú y tus acompañantes', desc: 'Nadie más comparte el vehículo. El Teramont es exclusivamente tuyo durante todo el trayecto.' },
+        { title: 'Horario a tu medida', desc: 'Tú eliges la hora. El vehículo llega puntual a tu dirección, sin esperas en terminales.' },
+        { title: 'Precio fijo y transparente', desc: 'Conoces el precio antes de reservar. Sin sorpresas, sin recargos de última hora.' },
+        { title: 'Confirmación instantánea', desc: 'Tu reserva queda confirmada de inmediato con código y acceso directo por WhatsApp.' },
+        { title: 'Hasta 5 pasajeros', desc: 'Ideal para familias, grupos y viajeros de negocios. Todo el espacio que necesitas.' },
+        { title: 'Volkswagen Teramont 2024', desc: 'SUV premium con aire acondicionado, amplio espacio para maletas y asientos cómodos.' },
+      ],
+    },
+    routes: {
+      sectionLabel: 'Destinos disponibles',
+      title: 'Rutas disponibles',
+      subtitle: 'Servicio de traslado privado entre las principales ciudades de la costa Caribe colombiana.',
+      from: 'Desde',
+      to: 'Hasta',
+      perVehicle: 'Por vehículo',
+      bookRoute: 'Reservar esta ruta',
+      priceNote: 'Tarifa por vehículo, no por persona. Sin cargos ocultos.',
+      highlights: {
+        'cartagena-barranquilla': 'Ruta más popular',
+        'cartagena-baru': 'Paraíso caribeño',
+      },
+    },
+    howItWorks: {
+      sectionLabel: 'Simple y transparente',
+      title: 'Cómo funciona',
+      subtitle: 'Reservar tu viaje privado es rápido y sencillo. Sin llamadas, sin negociación, sin sorpresas.',
+      steps: [
+        { title: 'Elige tu ruta', desc: 'Selecciona origen y destino entre Cartagena, Barú y Barranquilla.' },
+        { title: 'Selecciona fecha y hora', desc: 'El sistema muestra únicamente los horarios disponibles reales según la ubicación del vehículo.' },
+        { title: 'Reserva con el 50%', desc: 'Paga el 50% del servicio online para confirmar tu reserva de forma segura con Wompi.' },
+        { title: 'Recibe confirmación', desc: 'Inmediatamente recibes el código de reserva, los detalles del viaje y acceso por WhatsApp.' },
+        { title: 'Viaja tranquilo', desc: 'El vehículo llega a tu dirección. Paga el saldo restante antes de iniciar el trayecto.' },
+      ],
+      cta: 'Reservar ahora',
+    },
+    pricing: {
+      sectionLabel: 'Tarifa única',
+      perVehicle: 'Por vehículo · No por persona',
+      depositLabel: 'Paga solo el',
+      depositSuffix: '% para reservar',
+      deposit: 'Anticipo para reservar',
+      balance: 'Saldo al inicio del viaje',
+      total: 'Total',
+      cta: 'Reservar con',
+      included: 'Incluido en el servicio',
+      items: [
+        'Vehículo privado exclusivo',
+        'Hasta 5 pasajeros',
+        'Equipaje incluido',
+        'Aire acondicionado',
+        'Servicio puerta a puerta',
+        'Sin esperas ni rodeos',
+      ],
+      note: 'El precio es fijo por vehículo, sin importar el número de pasajeros. Las tarifas se actualizan desde el panel administrativo.',
+    },
+    faq: {
+      sectionLabel: 'Preguntas frecuentes',
+      title: '¿Tienes dudas?',
+      subtitle: 'Encuentra respuestas a las preguntas más comunes sobre nuestro servicio.',
+      items: [
+        {
+          q: '¿Cuántas personas pueden viajar?',
+          a: 'La Volkswagen Teramont tiene capacidad para hasta 5 pasajeros con equipaje estándar. Si el grupo es más grande, contáctanos por WhatsApp.',
+        },
+        {
+          q: '¿Cuánto equipaje puedo llevar?',
+          a: 'El vehículo tiene amplio maletero. Puedes llevar maletas grandes sin problema. Si tienes equipaje voluminoso especial, infórmanos al reservar.',
+        },
+        {
+          q: '¿Con cuánta anticipación debo reservar?',
+          a: 'Mínimo 6 horas antes del viaje. Recomendamos reservar con al menos 24 horas de anticipación para garantizar disponibilidad, especialmente en temporada alta.',
+        },
+        {
+          q: '¿Cómo funciona el pago del anticipo?',
+          a: 'Pagas el 50% online vía Wompi (tarjeta débito/crédito, PSE, Nequi) al confirmar la reserva. El saldo restante lo pagas en efectivo o transferencia antes de iniciar el viaje.',
+        },
+        {
+          q: '¿Qué pasa si necesito cancelar?',
+          a: 'Cancelaciones con más de 24 horas de anticipación: reembolso o reagendamiento sin costo. Cancelaciones con menos de 24 horas: el anticipo no es reembolsable.',
+        },
+        {
+          q: '¿El precio es por persona o por vehículo?',
+          a: 'El precio es fijo por vehículo, sin importar cuántas personas viajen. Si van 2 o van 5, la tarifa es la misma.',
+        },
+      ],
+      contact: '¿No encontraste tu respuesta?',
+      contactCta: 'Escríbenos por WhatsApp',
+    },
+    footer: {
+      tagline: '¿Listo para viajar?',
+      taglineSub: 'Reserva tu viaje privado en minutos.',
+      bookNow: 'Reservar ahora',
+      description: 'Viajes privados premium entre Cartagena, Barú y Barranquilla en Volkswagen Teramont 2024. Costa Caribe Colombiana.',
+      routesTitle: 'Rutas',
+      infoTitle: 'Información',
+      links: {
+        routesAndPrices: 'Rutas y precios',
+        faq: 'Preguntas frecuentes',
+        cancellation: 'Políticas de cancelación',
+        terms: 'Términos y condiciones',
+        privacy: 'Privacidad',
+      },
+      copyright: 'Todos los derechos reservados.',
+      subtitle: 'Costa Caribe Colombiana · Pagos seguros con Wompi',
+    },
+    pages: {
+      faq: { label: 'Soporte', title: 'Preguntas frecuentes', subtitle: 'Todo lo que necesitas saber sobre Teramont Private Rides.' },
+      policies: { label: 'Legal', title: 'Políticas y términos', subtitle: 'Cancelaciones, reembolsos y condiciones del servicio.' },
+      routes: { label: 'Destinos', title: 'Rutas y tarifas', subtitle: 'Todos los destinos disponibles con precios reales.' },
+      book: { label: 'Reserva tu viaje', title: 'Reserva tu viaje privado', subtitle: 'Disponibilidad en tiempo real. Confirmación inmediata.' },
+    },
+    booking: {
+      steps: ['Ruta', 'Fecha y hora', 'Pasajeros', 'Datos personales', 'Confirmar'],
+      route: 'Selecciona tu ruta',
+      from: 'Desde',
+      to: 'Hacia',
+      selectOrigin: 'Selecciona origen',
+      selectDest: 'Selecciona destino',
+      date: 'Fecha de viaje',
+      time: 'Hora de recogida',
+      availableSlots: 'Horarios disponibles',
+      noSlots: 'Sin horarios disponibles para este día',
+      passengers: 'Número de pasajeros',
+      luggage: 'Cantidad de maletas',
+      pickupAddress: 'Dirección de recogida',
+      dropoffAddress: 'Dirección de destino',
+      pickupPlaceholder: 'Calle, número, barrio o referencia...',
+      name: 'Nombre completo',
+      email: 'Email',
+      phone: 'Teléfono (WhatsApp)',
+      phonePlaceholder: '+57 300 000 0000',
+      notes: 'Notas adicionales (opcional)',
+      notesPlaceholder: 'Alergias, preferencias, instrucciones especiales...',
+      summary: 'Resumen de tu reserva',
+      total: 'Total',
+      deposit: 'Anticipo ahora',
+      balance: 'Saldo antes del viaje',
+      payDeposit: 'Pagar anticipo',
+      loading: 'Procesando...',
+      back: 'Atrás',
+      next: 'Continuar',
+      cancellationNote: 'Cancelación gratuita con más de 24 horas de anticipación.',
+      securePayment: 'Pago seguro con',
+    },
+    confirmation: {
+      verifying: 'Verificando tu pago...',
+      confirmed: '¡Reserva confirmada!',
+      confirmedSub: 'Tu viaje privado está reservado. Nos vemos pronto.',
+      bookingDetails: 'Detalles de tu reserva',
+      route: 'Ruta',
+      datetime: 'Fecha y hora',
+      arrival: 'Llegada estimada',
+      pickup: 'Dirección de recogida',
+      dropoff: 'Dirección de destino',
+      passengers: 'Pasajeros',
+      totalPrice: 'Precio total',
+      depositPaid: 'Anticipo pagado',
+      balanceDue: 'Saldo antes del viaje',
+      policies: 'Políticas de cancelación',
+      policiesText: 'Cancelaciones realizadas con más de 24 horas de anticipación pueden ser reprogramadas o reembolsadas. Cancelaciones dentro de las 24 horas previas al servicio no son reembolsables.',
+      whatsapp: 'Confirmar por WhatsApp',
+      backHome: 'Volver al inicio',
+      pendingTitle: 'Pago en proceso',
+      pendingText: 'Tu pago está siendo procesado. Recibirás una confirmación cuando sea aprobado.',
+      bookingCode: 'Código de reserva',
+      confirmWhatsapp: 'Confirmar por WhatsApp',
+      failedTitle: 'Pago no completado',
+      failedText: 'No pudimos confirmar tu pago. El horario ha sido liberado. Puedes intentar de nuevo.',
+      tryAgain: 'Intentar de nuevo',
+      contactWhatsapp: 'Escribir por WhatsApp',
+    },
+  },
+
+  en: {
+    nav: {
+      routes: 'Routes',
+      howItWorks: 'How it works',
+      faq: 'FAQ',
+      policies: 'Policies',
+      book: 'Book a ride',
+    },
+    hero: {
+      badge: 'Colombian Caribbean Coast',
+      title1: 'Private rides',
+      titleAccent: 'premium',
+      title2: 'from Cartagena',
+      subtitle: 'Travel between',
+      subtitleCities: 'Cartagena, Barú and Barranquilla',
+      subtitleEnd: 'in a Volkswagen Teramont — comfort, privacy and peace of mind from the very first minute.',
+      tagline: 'Your route · Your schedule · Your space',
+      cta: 'Book my ride',
+      ctaRoutes: 'View routes',
+      trust: ['Exclusive vehicle', 'No sharing', 'Secure payment', 'Instant confirmation'],
+      scrollLabel: 'Explore',
+    },
+    benefits: {
+      sectionLabel: 'Why choose us',
+      title: 'The private travel difference',
+      subtitle: "It's not a taxi. It's not a bus. It's your space, your time and your comfort.",
+      items: [
+        { title: 'Just you and your group', desc: 'Nobody else shares the vehicle. The Teramont is exclusively yours for the entire journey.' },
+        { title: 'On your schedule', desc: 'You choose the time. The vehicle arrives punctually at your location — no terminal waiting.' },
+        { title: 'Fixed, transparent pricing', desc: 'Know the price before you book. No surprises, no last-minute surcharges.' },
+        { title: 'Instant confirmation', desc: 'Your booking is confirmed immediately with a code and direct WhatsApp access.' },
+        { title: 'Up to 5 passengers', desc: 'Perfect for families, groups and business travelers. All the space you need.' },
+        { title: 'Volkswagen Teramont 2024', desc: 'Premium SUV with air conditioning, ample luggage space and comfortable seating.' },
+      ],
+    },
+    routes: {
+      sectionLabel: 'Available destinations',
+      title: 'Available routes',
+      subtitle: 'Private transfer service between the main cities of the Colombian Caribbean coast.',
+      from: 'From',
+      to: 'To',
+      perVehicle: 'Per vehicle',
+      bookRoute: 'Book this route',
+      priceNote: 'Price per vehicle, not per person. No hidden fees.',
+      highlights: {
+        'cartagena-barranquilla': 'Most popular',
+        'cartagena-baru': 'Caribbean paradise',
+      },
+    },
+    howItWorks: {
+      sectionLabel: 'Simple and transparent',
+      title: 'How it works',
+      subtitle: 'Booking your private ride is fast and simple. No calls, no negotiation, no surprises.',
+      steps: [
+        { title: 'Choose your route', desc: 'Select origin and destination between Cartagena, Barú and Barranquilla.' },
+        { title: 'Pick date and time', desc: 'The system shows only real available time slots based on the vehicle\'s actual location.' },
+        { title: 'Book with 50% deposit', desc: 'Pay 50% online through Wompi (card, PSE, Nequi) to securely confirm your booking.' },
+        { title: 'Receive confirmation', desc: 'You immediately receive your booking code, trip details and WhatsApp access.' },
+        { title: 'Travel in peace', desc: 'The vehicle arrives at your address. Pay the remaining balance before departure.' },
+      ],
+      cta: 'Book now',
+    },
+    pricing: {
+      sectionLabel: 'Flat rate',
+      perVehicle: 'Per vehicle · Not per person',
+      depositLabel: 'Pay only',
+      depositSuffix: '% to reserve',
+      deposit: 'Deposit to book',
+      balance: 'Balance before departure',
+      total: 'Total',
+      cta: 'Book with',
+      included: 'Included in the service',
+      items: [
+        'Exclusive private vehicle',
+        'Up to 5 passengers',
+        'Luggage included',
+        'Air conditioning',
+        'Door-to-door service',
+        'No waiting, no detours',
+      ],
+      note: 'The price is fixed per vehicle, regardless of the number of passengers. Rates can be updated from the admin panel.',
+    },
+    faq: {
+      sectionLabel: 'FAQ',
+      title: 'Have questions?',
+      subtitle: 'Find answers to the most common questions about our service.',
+      items: [
+        {
+          q: 'How many people can travel?',
+          a: 'The Volkswagen Teramont fits up to 5 passengers with standard luggage. For larger groups, contact us via WhatsApp.',
+        },
+        {
+          q: 'How much luggage can I bring?',
+          a: 'The vehicle has a large trunk. You can bring full-size suitcases without a problem. Let us know if you have oversized luggage when booking.',
+        },
+        {
+          q: 'How far in advance should I book?',
+          a: 'At least 6 hours before the trip. We recommend booking at least 24 hours in advance to ensure availability, especially during high season.',
+        },
+        {
+          q: 'How does the deposit payment work?',
+          a: 'You pay 50% online via Wompi (debit/credit card, PSE, Nequi) when confirming the booking. The remaining balance is paid in cash or by transfer before the trip begins.',
+        },
+        {
+          q: 'What if I need to cancel?',
+          a: 'Cancellations more than 24 hours in advance: full refund or free rescheduling. Cancellations within 24 hours: the deposit is non-refundable.',
+        },
+        {
+          q: 'Is the price per person or per vehicle?',
+          a: 'The price is fixed per vehicle, regardless of how many people travel. Whether 2 or 5 passengers, the rate is the same.',
+        },
+      ],
+      contact: "Didn't find your answer?",
+      contactCta: 'Message us on WhatsApp',
+    },
+    footer: {
+      tagline: 'Ready to travel?',
+      taglineSub: 'Book your private ride in minutes.',
+      bookNow: 'Book now',
+      description: 'Premium private rides between Cartagena, Barú and Barranquilla in a Volkswagen Teramont 2024. Colombian Caribbean Coast.',
+      routesTitle: 'Routes',
+      infoTitle: 'Information',
+      links: {
+        routesAndPrices: 'Routes & prices',
+        faq: 'Frequently asked questions',
+        cancellation: 'Cancellation policy',
+        terms: 'Terms & conditions',
+        privacy: 'Privacy policy',
+      },
+      copyright: 'All rights reserved.',
+      subtitle: 'Colombian Caribbean Coast · Secure payments with Wompi',
+    },
+    pages: {
+      faq: { label: 'Support', title: 'Frequently asked questions', subtitle: 'Everything you need to know about Teramont Private Rides.' },
+      policies: { label: 'Legal', title: 'Policies & terms', subtitle: 'Cancellations, refunds and service conditions.' },
+      routes: { label: 'Destinations', title: 'Routes & rates', subtitle: 'All available destinations with live pricing.' },
+      book: { label: 'Book your ride', title: 'Book your private ride', subtitle: 'Real-time availability. Instant confirmation.' },
+    },
+    booking: {
+      steps: ['Route', 'Date & time', 'Passengers', 'Your info', 'Confirm'],
+      route: 'Select your route',
+      from: 'From',
+      to: 'To',
+      selectOrigin: 'Select origin',
+      selectDest: 'Select destination',
+      date: 'Travel date',
+      time: 'Pickup time',
+      availableSlots: 'Available time slots',
+      noSlots: 'No available slots for this day',
+      passengers: 'Number of passengers',
+      luggage: 'Number of bags',
+      pickupAddress: 'Pickup address',
+      dropoffAddress: 'Drop-off address',
+      pickupPlaceholder: 'Street, number, neighborhood or reference...',
+      name: 'Full name',
+      email: 'Email',
+      phone: 'Phone (WhatsApp)',
+      phonePlaceholder: '+57 300 000 0000',
+      notes: 'Additional notes (optional)',
+      notesPlaceholder: 'Allergies, preferences, special instructions...',
+      summary: 'Booking summary',
+      total: 'Total',
+      deposit: 'Deposit now',
+      balance: 'Balance before departure',
+      payDeposit: 'Pay deposit',
+      loading: 'Processing...',
+      back: 'Back',
+      next: 'Continue',
+      cancellationNote: 'Free cancellation with more than 24 hours notice.',
+      securePayment: 'Secure payment with',
+    },
+    confirmation: {
+      verifying: 'Verifying your payment...',
+      confirmed: 'Booking confirmed!',
+      confirmedSub: 'Your private ride is booked. See you soon.',
+      bookingDetails: 'Your booking details',
+      route: 'Route',
+      datetime: 'Date & time',
+      arrival: 'Estimated arrival',
+      pickup: 'Pickup address',
+      dropoff: 'Drop-off address',
+      passengers: 'Passengers',
+      totalPrice: 'Total price',
+      depositPaid: 'Deposit paid',
+      balanceDue: 'Balance before departure',
+      policies: 'Cancellation policy',
+      policiesText: 'Cancellations made more than 24 hours in advance may be rescheduled or refunded. Cancellations within 24 hours of the service are non-refundable.',
+      whatsapp: 'Confirm via WhatsApp',
+      backHome: 'Back to home',
+      pendingTitle: 'Payment processing',
+      pendingText: 'Your payment is being processed. You will receive confirmation once approved.',
+      bookingCode: 'Booking code',
+      confirmWhatsapp: 'Confirm via WhatsApp',
+      failedTitle: 'Payment not completed',
+      failedText: 'We could not confirm your payment. The time slot has been released. You can try again.',
+      tryAgain: 'Try again',
+      contactWhatsapp: 'Message us on WhatsApp',
+    },
+  },
+} as const
+
+export type TranslationKey = typeof translations.es
+
+export function t(locale: Locale, path: string): string {
+  const keys = path.split('.')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let val: any = translations[locale]
+  for (const k of keys) {
+    val = val?.[k]
+    if (val === undefined) {
+      // fallback to Spanish
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let fallback: any = translations.es
+      for (const fk of keys) fallback = fallback?.[fk]
+      return typeof fallback === 'string' ? fallback : path
+    }
+  }
+  return typeof val === 'string' ? val : path
+}
+
+export function tArr<T>(locale: Locale, path: string): T[] {
+  const keys = path.split('.')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let val: any = translations[locale]
+  for (const k of keys) val = val?.[k]
+  if (Array.isArray(val)) return val as T[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let fallback: any = translations.es
+  for (const k of keys) fallback = fallback?.[k]
+  return Array.isArray(fallback) ? fallback as T[] : []
+}

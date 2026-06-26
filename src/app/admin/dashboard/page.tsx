@@ -65,61 +65,61 @@ export default function DashboardPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-stone-100">
+      <div className="flex min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8 overflow-auto">
           <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-stone-900">Dashboard</h1>
-            <p className="text-stone-500 text-sm mt-1">
+            <h1 className="text-2xl font-semibold text-foreground">Dashboard</h1>
+            <p className="text-muted-foreground text-sm mt-1">
               {format(toZonedTime(new Date(), TIMEZONE), "EEEE d 'de' MMMM 'de' yyyy")}
             </p>
           </div>
 
           {/* KPI cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-            <div className="bg-white rounded-xl border border-stone-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-stone-500 uppercase tracking-wider">Hoy</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider">Hoy</span>
                 <Calendar size={18} className="text-gold" />
               </div>
-              <p className="text-3xl font-semibold text-stone-900">{todayBookings.length}</p>
-              <p className="text-xs text-stone-500 mt-1">reservas confirmadas</p>
+              <p className="text-3xl font-semibold text-foreground">{todayBookings.length}</p>
+              <p className="text-xs text-muted-foreground mt-1">reservas confirmadas</p>
             </div>
 
-            <div className="bg-white rounded-xl border border-stone-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-stone-500 uppercase tracking-wider">Ingresos</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider">Ingresos</span>
                 <DollarSign size={18} className="text-gold" />
               </div>
-              <p className="text-2xl font-semibold text-stone-900">{formatCOP(confirmedTotal)}</p>
-              <p className="text-xs text-stone-500 mt-1">total en reservas</p>
+              <p className="text-2xl font-semibold text-foreground">{formatCOP(confirmedTotal)}</p>
+              <p className="text-xs text-muted-foreground mt-1">total en reservas</p>
             </div>
 
-            <div className="bg-white rounded-xl border border-stone-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-stone-500 uppercase tracking-wider">Vehículo</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider">Vehículo</span>
                 <Clock size={18} className="text-gold" />
               </div>
-              <p className="text-sm font-semibold text-stone-900 leading-snug">{vehicleState}</p>
-              <p className="text-xs text-stone-500 mt-1">estado actual</p>
+              <p className="text-sm font-semibold text-foreground leading-snug">{vehicleState}</p>
+              <p className="text-xs text-muted-foreground mt-1">estado actual</p>
             </div>
 
-            <div className="bg-white rounded-xl border border-stone-200 p-5">
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-stone-500 uppercase tracking-wider">Total</span>
+                <span className="text-xs text-muted-foreground uppercase tracking-wider">Total</span>
                 <CheckCircle size={18} className="text-gold" />
               </div>
-              <p className="text-3xl font-semibold text-stone-900">
+              <p className="text-3xl font-semibold text-foreground">
                 {bookings.filter(b => b.status === 'CONFIRMED' || b.status === 'PAID_FULL').length}
               </p>
-              <p className="text-xs text-stone-500 mt-1">reservas confirmadas</p>
+              <p className="text-xs text-muted-foreground mt-1">reservas confirmadas</p>
             </div>
           </div>
 
           {/* Recent bookings */}
-          <div className="bg-white rounded-xl border border-stone-200">
-            <div className="px-6 py-4 border-b border-stone-100 flex items-center justify-between">
-              <h2 className="font-semibold text-stone-900">Últimas reservas</h2>
+          <div className="bg-white rounded-xl border border-slate-200">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+              <h2 className="font-semibold text-foreground">Últimas reservas</h2>
               <a href="/admin/bookings" className="text-xs text-gold hover:underline">
                 Ver todas
               </a>
@@ -127,38 +127,38 @@ export default function DashboardPage() {
 
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 size={24} className="animate-spin text-stone-400" />
+                <Loader2 size={24} className="animate-spin text-muted-foreground" />
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-stone-100">
-                      <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Código</th>
-                      <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Cliente</th>
-                      <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Ruta</th>
-                      <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Fecha</th>
-                      <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Precio</th>
-                      <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wider">Estado</th>
+                    <tr className="border-b border-slate-100">
+                      <th className="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Código</th>
+                      <th className="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                      <th className="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Ruta</th>
+                      <th className="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</th>
+                      <th className="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Precio</th>
+                      <th className="text-left px-6 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-100">
                     {bookings.map((b) => {
                       const statusInfo = STATUS_LABELS[b.status] || { label: b.status, variant: 'secondary' }
                       return (
-                        <tr key={b.id} className="hover:bg-stone-50 transition-colors">
-                          <td className="px-6 py-3 font-mono text-xs text-stone-600">{b.booking_code}</td>
+                        <tr key={b.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="px-6 py-3 font-mono text-xs text-muted-foreground">{b.booking_code}</td>
                           <td className="px-6 py-3">
-                            <p className="font-medium text-stone-900">{b.customer_name}</p>
-                            <p className="text-xs text-stone-500">{b.customer_email}</p>
+                            <p className="font-medium text-foreground">{b.customer_name}</p>
+                            <p className="text-xs text-muted-foreground">{b.customer_email}</p>
                           </td>
-                          <td className="px-6 py-3 text-stone-600">
+                          <td className="px-6 py-3 text-muted-foreground">
                             {b.origin?.name} → {b.destination?.name}
                           </td>
-                          <td className="px-6 py-3 text-stone-600 text-xs">
+                          <td className="px-6 py-3 text-muted-foreground text-xs">
                             {formatDatetimeBogota(b.pickup_datetime)}
                           </td>
-                          <td className="px-6 py-3 font-medium text-stone-900">
+                          <td className="px-6 py-3 font-medium text-foreground">
                             {formatCOP(b.total_price_cop)}
                           </td>
                           <td className="px-6 py-3">
@@ -169,7 +169,7 @@ export default function DashboardPage() {
                     })}
                     {bookings.length === 0 && (
                       <tr>
-                        <td colSpan={6} className="px-6 py-8 text-center text-stone-400 text-sm">
+                        <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground text-sm">
                           No hay reservas registradas
                         </td>
                       </tr>
