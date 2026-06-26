@@ -88,7 +88,7 @@ export async function PricingBanner() {
               <div className="flex flex-col gap-3">
                 <Button asChild size="lg" className="w-full bg-gold hover:bg-gold/90 text-white h-13 text-base">
                   <Link href="/reservar">
-                    {p.cta} {formatCOP(minDeposit)}
+                    {p.cta}
                     <ArrowRight size={18} />
                   </Link>
                 </Button>

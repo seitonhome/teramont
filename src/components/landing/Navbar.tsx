@@ -9,17 +9,18 @@ import { cn } from '@/lib/utils'
 import { getLocaleClient } from '@/lib/locale'
 import { translations } from '@/lib/i18n'
 
-export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
+export function Navbar({ forceDark = false }: { forceDark?: boolean }) {
+  const [scrolled, setScrolled] = useState(forceDark)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [locale, setLocale] = useState<'es' | 'en'>('es')
 
   useEffect(() => {
     setLocale(getLocaleClient())
+    if (forceDark) return
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [forceDark])
 
   const nav = translations[locale].nav
 

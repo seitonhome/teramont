@@ -80,7 +80,7 @@ export const translations = {
       balance: 'Saldo al inicio del viaje',
       total: 'Total ruta',
       viewRoutes: 'Ver todas las rutas',
-      cta: 'Reservar con',
+      cta: 'Reservar ahora',
       included: 'Incluido en el servicio',
       items: [
         'Vehículo privado exclusivo',
@@ -335,7 +335,7 @@ export const translations = {
       balance: 'Balance before departure',
       total: 'Route total',
       viewRoutes: 'View all routes',
-      cta: 'Book with',
+      cta: 'Book now',
       included: 'Included in the service',
       items: [
         'Exclusive private vehicle',

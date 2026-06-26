@@ -9,7 +9,7 @@ export default function ReservaErrorPage() {
 
   return (
     <>
-      <Navbar />
+      <Navbar forceDark />
       <main className="min-h-screen bg-background pt-24 pb-16">
         <div className="max-w-lg mx-auto px-4 text-center">
           <div className="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6">
