@@ -20,6 +20,9 @@ import { formatCOP, minutesToHoursLabel } from '@/lib/utils'
 import { format, addDays } from 'date-fns'
 import { Clock, AlertCircle, Loader2, ArrowRight, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getLocaleClient } from '@/lib/locale'
+import { translations } from '@/lib/i18n'
+import type { Locale } from '@/lib/i18n'
 
 const LOCATIONS = [
   { id: '11111111-1111-1111-1111-111111111111', name: 'Cartagena' },
@@ -28,17 +31,17 @@ const LOCATIONS = [
 ]
 
 const schema = z.object({
-  origin_location_id: z.string().min(1, 'Selecciona el origen'),
-  destination_location_id: z.string().min(1, 'Selecciona el destino'),
-  pickup_date: z.string().min(1, 'Selecciona la fecha'),
-  pickup_time: z.string().min(1, 'Selecciona la hora'),
+  origin_location_id: z.string().min(1),
+  destination_location_id: z.string().min(1),
+  pickup_date: z.string().min(1),
+  pickup_time: z.string().min(1),
   passengers_count: z.number().int().min(1).max(5),
   luggage_count: z.number().int().min(0).max(10),
-  customer_name: z.string().min(2, 'Nombre mínimo 2 caracteres'),
-  customer_email: z.string().email('Email inválido'),
-  customer_phone: z.string().min(7, 'Teléfono inválido').max(20),
-  pickup_address: z.string().min(5, 'Dirección de recogida requerida'),
-  dropoff_address: z.string().min(5, 'Dirección de destino requerida'),
+  customer_name: z.string().min(2),
+  customer_email: z.string().email(),
+  customer_phone: z.string().min(7).max(20),
+  pickup_address: z.string().min(5),
+  dropoff_address: z.string().min(5),
   notes: z.string().max(500).optional(),
   payment_type: z.enum(['deposit', 'full']),
 })
@@ -67,12 +70,17 @@ export function BookingForm({
   initialDestination?: string
 }) {
   const router = useRouter()
+  const [locale, setLocale] = useState<Locale>('es')
   const [slots, setSlots] = useState<Slot[]>([])
   const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null)
   const [loadingSlots, setLoadingSlots] = useState(false)
   const [slotsError, setSlotsError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [depositPct, setDepositPct] = useState(50)
+
+  useEffect(() => {
+    setLocale(getLocaleClient())
+  }, [])
 
   const today = format(new Date(), 'yyyy-MM-dd')
   const maxDate = format(addDays(new Date(), 60), 'yyyy-MM-dd')
@@ -102,10 +110,12 @@ export function BookingForm({
   const pickupTime = watch('pickup_time')
   const paymentType = watch('payment_type')
 
+  const bk = translations[locale].booking
+
   const fetchSlots = useCallback(async () => {
     if (!originId || !destinationId || !pickupDate) return
     if (originId === destinationId) {
-      setSlotsError('El origen y destino no pueden ser iguales')
+      setSlotsError(bk.sameOriginDest)
       setSlots([])
       return
     }
@@ -128,7 +138,7 @@ export function BookingForm({
       const data = await res.json()
 
       if (!res.ok) {
-        setSlotsError(data.error || 'Error al consultar disponibilidad')
+        setSlotsError(data.error || bk.connectionError)
         return
       }
 
@@ -136,10 +146,11 @@ export function BookingForm({
       setRouteInfo(data.route)
       setDepositPct(data.deposit_percentage || 50)
     } catch {
-      setSlotsError('Error de conexión. Intenta de nuevo.')
+      setSlotsError(bk.connectionError)
     } finally {
       setLoadingSlots(false)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [originId, destinationId, pickupDate, setValue])
 
   useEffect(() => {
@@ -158,13 +169,12 @@ export function BookingForm({
 
     const selectedSlot = slots.find((s) => s.datetime === pickupTime)
     if (!selectedSlot?.available) {
-      alert('El horario seleccionado ya no está disponible. Por favor elige otro.')
+      alert(bk.slotUnavail)
       return
     }
 
     setSubmitting(true)
     try {
-      // Step 1: Create booking
       const bookingRes = await fetch('/api/bookings/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -185,13 +195,11 @@ export function BookingForm({
       })
 
       const bookingData = await bookingRes.json()
-
       if (!bookingRes.ok) {
-        alert(bookingData.error || 'Error al crear la reserva')
+        alert(bookingData.error || bk.connectionError)
         return
       }
 
-      // Step 2: Create payment
       const paymentRes = await fetch('/api/payments/wompi/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -202,16 +210,14 @@ export function BookingForm({
       })
 
       const paymentData = await paymentRes.json()
-
       if (!paymentRes.ok) {
-        alert(paymentData.error || 'Error al iniciar el pago')
+        alert(paymentData.error || bk.connectionError)
         return
       }
 
-      // Redirect to Wompi checkout
       window.location.href = paymentData.checkout_url
     } catch {
-      alert('Error de conexión. Intenta de nuevo.')
+      alert(bk.connectionError)
     } finally {
       setSubmitting(false)
     }
@@ -223,12 +229,12 @@ export function BookingForm({
       <div className="bg-white rounded-xl border border-border p-6 lg:p-8">
         <h2 className="font-semibold text-foreground mb-6 flex items-center gap-2">
           <span className="w-6 h-6 rounded-full bg-gold/15 text-gold text-xs flex items-center justify-center font-bold">1</span>
-          Elige tu ruta
+          {bk.stepTitles[0]}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <Label className="mb-2 block text-sm">Origen</Label>
+            <Label className="mb-2 block text-sm">{bk.origin}</Label>
             <Select
               value={originId}
               onValueChange={(val) => {
@@ -237,23 +243,21 @@ export function BookingForm({
               }}
             >
               <SelectTrigger className={errors.origin_location_id ? 'border-red-400' : ''}>
-                <SelectValue placeholder="Ciudad de salida" />
+                <SelectValue placeholder={bk.originPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {LOCATIONS.map((loc) => (
-                  <SelectItem key={loc.id} value={loc.id}>
-                    {loc.name}
-                  </SelectItem>
+                  <SelectItem key={loc.id} value={loc.id}>{loc.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
             {errors.origin_location_id && (
-              <p className="text-red-500 text-xs mt-1">{errors.origin_location_id.message}</p>
+              <p className="text-red-500 text-xs mt-1">{bk.selectOrigin}</p>
             )}
           </div>
 
           <div>
-            <Label className="mb-2 block text-sm">Destino</Label>
+            <Label className="mb-2 block text-sm">{bk.destination}</Label>
             <Select
               value={destinationId}
               onValueChange={(val) => {
@@ -262,18 +266,16 @@ export function BookingForm({
               }}
             >
               <SelectTrigger className={errors.destination_location_id ? 'border-red-400' : ''}>
-                <SelectValue placeholder="Ciudad de llegada" />
+                <SelectValue placeholder={bk.destPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {LOCATIONS.filter((l) => l.id !== originId).map((loc) => (
-                  <SelectItem key={loc.id} value={loc.id}>
-                    {loc.name}
-                  </SelectItem>
+                  <SelectItem key={loc.id} value={loc.id}>{loc.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
             {errors.destination_location_id && (
-              <p className="text-red-500 text-xs mt-1">{errors.destination_location_id.message}</p>
+              <p className="text-red-500 text-xs mt-1">{bk.selectDest}</p>
             )}
           </div>
         </div>
@@ -281,9 +283,9 @@ export function BookingForm({
         {routeInfo && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground bg-secondary/50 rounded-lg px-4 py-2.5">
             <Clock size={14} className="text-gold" />
-            Duración estimada: ~{minutesToHoursLabel(routeInfo.estimated_duration_minutes)} ·{' '}
+            {bk.estimatedDuration}: ~{minutesToHoursLabel(routeInfo.estimated_duration_minutes)} ·{' '}
             <span className="font-semibold text-foreground">{formatCOP(routeInfo.base_price_cop)}</span>{' '}
-            por vehículo
+            {bk.perVehicleLabel}
           </div>
         )}
       </div>
@@ -292,11 +294,11 @@ export function BookingForm({
       <div className="bg-white rounded-xl border border-border p-6 lg:p-8">
         <h2 className="font-semibold text-foreground mb-6 flex items-center gap-2">
           <span className="w-6 h-6 rounded-full bg-gold/15 text-gold text-xs flex items-center justify-center font-bold">2</span>
-          Fecha y hora de recogida
+          {bk.stepTitles[1]}
         </h2>
 
         <div className="mb-5">
-          <Label className="mb-2 block text-sm">Fecha del viaje</Label>
+          <Label className="mb-2 block text-sm">{bk.date}</Label>
           <Input
             type="date"
             min={today}
@@ -304,20 +306,16 @@ export function BookingForm({
             {...register('pickup_date')}
             className={errors.pickup_date ? 'border-red-400' : ''}
           />
-          {errors.pickup_date && (
-            <p className="text-red-500 text-xs mt-1">{errors.pickup_date.message}</p>
-          )}
         </div>
 
-        {/* Time slots */}
         {pickupDate && originId && destinationId && (
           <div>
-            <Label className="mb-3 block text-sm">Hora de recogida</Label>
+            <Label className="mb-3 block text-sm">{bk.time}</Label>
 
             {loadingSlots && (
               <div className="flex items-center gap-2 text-muted-foreground text-sm py-4">
                 <Loader2 size={16} className="animate-spin" />
-                Consultando disponibilidad...
+                {bk.consultingAvail}
               </div>
             )}
 
@@ -332,15 +330,13 @@ export function BookingForm({
               <>
                 {availableSlots.length === 0 ? (
                   <div className="text-sm text-muted-foreground bg-secondary/50 rounded-lg p-4 border border-border">
-                    <p className="font-medium text-foreground mb-1">Sin disponibilidad</p>
-                    <p>Para ese horario el vehículo no está disponible desde el origen seleccionado. Prueba otro horario o escríbenos para ayudarte.</p>
+                    <p className="font-medium text-foreground mb-1">{bk.noAvailability}</p>
+                    <p>{bk.noAvailabilityText}</p>
                   </div>
                 ) : (
                   <>
                     {availableSlots.length <= 4 && (
-                      <p className="text-xs text-amber-600 font-medium mb-2">
-                        ⚡ Últimos horarios disponibles para esta fecha
-                      </p>
+                      <p className="text-xs text-amber-600 font-medium mb-2">{bk.lastSlots}</p>
                     )}
                     <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2">
                       {slots.map((slot) => (
@@ -348,11 +344,7 @@ export function BookingForm({
                           key={slot.datetime}
                           type="button"
                           disabled={!slot.available}
-                          onClick={() => {
-                            if (slot.available) {
-                              setValue('pickup_time', slot.datetime)
-                            }
-                          }}
+                          onClick={() => { if (slot.available) setValue('pickup_time', slot.datetime) }}
                           title={!slot.available ? slot.reason : undefined}
                           className={cn(
                             'py-2.5 px-2 rounded-lg text-xs font-medium border transition-all',
@@ -373,7 +365,7 @@ export function BookingForm({
             )}
 
             {errors.pickup_time && (
-              <p className="text-red-500 text-xs mt-2">Selecciona una hora disponible</p>
+              <p className="text-red-500 text-xs mt-2">{bk.selectTimeError}</p>
             )}
           </div>
         )}
@@ -383,41 +375,31 @@ export function BookingForm({
       <div className="bg-white rounded-xl border border-border p-6 lg:p-8">
         <h2 className="font-semibold text-foreground mb-6 flex items-center gap-2">
           <span className="w-6 h-6 rounded-full bg-gold/15 text-gold text-xs flex items-center justify-center font-bold">3</span>
-          Detalles del viaje
+          {bk.stepTitles[2]}
         </h2>
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <Label className="mb-2 block text-sm">Pasajeros</Label>
-            <Select
-              defaultValue="1"
-              onValueChange={(v) => setValue('passengers_count', Number(v))}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
+            <Label className="mb-2 block text-sm">{bk.passengers}</Label>
+            <Select defaultValue="1" onValueChange={(v) => setValue('passengers_count', Number(v))}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 {[1, 2, 3, 4, 5].map((n) => (
                   <SelectItem key={n} value={String(n)}>
-                    {n} {n === 1 ? 'pasajero' : 'pasajeros'}
+                    {n} {n === 1 ? bk.passenger : bk.passengersPlural}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label className="mb-2 block text-sm">Maletas</Label>
-            <Select
-              defaultValue="1"
-              onValueChange={(v) => setValue('luggage_count', Number(v))}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
+            <Label className="mb-2 block text-sm">{bk.luggage}</Label>
+            <Select defaultValue="1" onValueChange={(v) => setValue('luggage_count', Number(v))}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 {[0, 1, 2, 3, 4, 5].map((n) => (
                   <SelectItem key={n} value={String(n)}>
-                    {n} {n === 1 ? 'maleta' : 'maletas'}
+                    {n} {n === 1 ? bk.bag : bk.bagsPlural}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -427,36 +409,32 @@ export function BookingForm({
 
         <div className="space-y-4">
           <div>
-            <Label className="mb-2 block text-sm">Dirección exacta de recogida</Label>
+            <Label className="mb-2 block text-sm">{bk.exactPickup}</Label>
             <Input
-              placeholder="Calle, barrio, referencia..."
+              placeholder={bk.pickupPlaceholder2}
               {...register('pickup_address')}
               className={errors.pickup_address ? 'border-red-400' : ''}
             />
             {errors.pickup_address && (
-              <p className="text-red-500 text-xs mt-1">{errors.pickup_address.message}</p>
+              <p className="text-red-500 text-xs mt-1">{bk.pickupAddress}</p>
             )}
           </div>
 
           <div>
-            <Label className="mb-2 block text-sm">Dirección exacta de destino</Label>
+            <Label className="mb-2 block text-sm">{bk.exactDropoff}</Label>
             <Input
-              placeholder="Hotel, dirección, punto de referencia..."
+              placeholder={bk.dropoffPlaceholder}
               {...register('dropoff_address')}
               className={errors.dropoff_address ? 'border-red-400' : ''}
             />
             {errors.dropoff_address && (
-              <p className="text-red-500 text-xs mt-1">{errors.dropoff_address.message}</p>
+              <p className="text-red-500 text-xs mt-1">{bk.dropoffAddress}</p>
             )}
           </div>
 
           <div>
-            <Label className="mb-2 block text-sm">Notas adicionales (opcional)</Label>
-            <Textarea
-              placeholder="Vuelo, número de habitación, instrucciones especiales..."
-              {...register('notes')}
-              rows={3}
-            />
+            <Label className="mb-2 block text-sm">{bk.notes}</Label>
+            <Textarea placeholder={bk.notesPlaceholder2} {...register('notes')} rows={3} />
           </div>
         </div>
       </div>
@@ -465,14 +443,14 @@ export function BookingForm({
       <div className="bg-white rounded-xl border border-border p-6 lg:p-8">
         <h2 className="font-semibold text-foreground mb-6 flex items-center gap-2">
           <span className="w-6 h-6 rounded-full bg-gold/15 text-gold text-xs flex items-center justify-center font-bold">4</span>
-          Tus datos de contacto
+          {bk.stepTitles[3]}
         </h2>
 
         <div className="space-y-4">
           <div>
-            <Label className="mb-2 block text-sm">Nombre completo</Label>
+            <Label className="mb-2 block text-sm">{bk.name}</Label>
             <Input
-              placeholder="Tu nombre"
+              placeholder={bk.name}
               {...register('customer_name')}
               className={errors.customer_name ? 'border-red-400' : ''}
             />
@@ -483,7 +461,7 @@ export function BookingForm({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label className="mb-2 block text-sm">Email</Label>
+              <Label className="mb-2 block text-sm">{bk.email}</Label>
               <Input
                 type="email"
                 placeholder="tu@email.com"
@@ -496,10 +474,10 @@ export function BookingForm({
             </div>
 
             <div>
-              <Label className="mb-2 block text-sm">WhatsApp / Teléfono</Label>
+              <Label className="mb-2 block text-sm">{bk.phone}</Label>
               <Input
                 type="tel"
-                placeholder="+57 300 0000000"
+                placeholder={bk.phonePlaceholder}
                 {...register('customer_phone')}
                 className={errors.customer_phone ? 'border-red-400' : ''}
               />
@@ -516,26 +494,23 @@ export function BookingForm({
         <div className="bg-white rounded-xl border border-border p-6 lg:p-8">
           <h2 className="font-semibold text-foreground mb-6 flex items-center gap-2">
             <span className="w-6 h-6 rounded-full bg-gold/15 text-gold text-xs flex items-center justify-center font-bold">5</span>
-            Resumen y pago
+            {bk.stepTitles[4]}
           </h2>
 
-          {/* Payment type selector */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
             <button
               type="button"
               onClick={() => setValue('payment_type', 'deposit')}
               className={cn(
                 'rounded-lg border p-4 text-left transition-all',
-                paymentType === 'deposit'
-                  ? 'border-gold bg-gold/5 shadow-sm'
-                  : 'border-border hover:border-gold/40'
+                paymentType === 'deposit' ? 'border-gold bg-gold/5 shadow-sm' : 'border-border hover:border-gold/40'
               )}
             >
               <p className="font-semibold text-foreground text-sm mb-1">
-                Pagar anticipo — {formatCOP(depositAmount)}
+                {bk.payDepositLabel} — {formatCOP(depositAmount)}
               </p>
               <p className="text-xs text-muted-foreground">
-                Saldo de {formatCOP(balanceAmount)} antes del viaje
+                {bk.pendingBalance.replace('Saldo pendiente (antes del viaje)', '')} {formatCOP(balanceAmount)}
               </p>
             </button>
 
@@ -544,47 +519,37 @@ export function BookingForm({
               onClick={() => setValue('payment_type', 'full')}
               className={cn(
                 'rounded-lg border p-4 text-left transition-all',
-                paymentType === 'full'
-                  ? 'border-gold bg-gold/5 shadow-sm'
-                  : 'border-border hover:border-gold/40'
+                paymentType === 'full' ? 'border-gold bg-gold/5 shadow-sm' : 'border-border hover:border-gold/40'
               )}
             >
               <p className="font-semibold text-foreground text-sm mb-1">
-                Pagar total — {formatCOP(totalPrice)}
+                {bk.payFull} — {formatCOP(totalPrice)}
               </p>
-              <p className="text-xs text-muted-foreground">
-                Sin pendientes. Tranquilidad total.
-              </p>
+              <p className="text-xs text-muted-foreground">{bk.noBalance}</p>
             </button>
           </div>
 
-          {/* Summary */}
           <div className="bg-secondary/40 rounded-lg p-4 mb-6 space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Tarifa del servicio</span>
+              <span className="text-muted-foreground">{bk.serviceFee}</span>
               <span className="font-medium">{formatCOP(totalPrice)}</span>
             </div>
             {paymentType === 'deposit' && (
-              <>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Saldo pendiente (antes del viaje)</span>
-                  <span className="font-medium">{formatCOP(balanceAmount)}</span>
-                </div>
-              </>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{bk.pendingBalance}</span>
+                <span className="font-medium">{formatCOP(balanceAmount)}</span>
+              </div>
             )}
             <div className="h-px bg-border" />
             <div className="flex justify-between font-semibold">
-              <span>A pagar ahora</span>
+              <span>{bk.toPayNow}</span>
               <span className="text-gold text-base">{formatCOP(chargeAmount)}</span>
             </div>
           </div>
 
           <div className="flex items-start gap-2 text-xs text-muted-foreground bg-secondary/30 rounded-lg p-3 mb-6">
             <Info size={14} className="flex-shrink-0 mt-0.5 text-gold" />
-            <span>
-              Al hacer clic en &quot;Reservar&quot; serás redirigido a Wompi para completar el pago.
-              Tu reserva se confirma únicamente cuando el pago es aprobado.
-            </span>
+            <span>{bk.wompiRedirect}</span>
           </div>
 
           <Button
@@ -596,18 +561,18 @@ export function BookingForm({
             {submitting ? (
               <>
                 <Loader2 size={18} className="animate-spin" />
-                Procesando...
+                {bk.loading}
               </>
             ) : (
               <>
-                Reservar y pagar {formatCOP(chargeAmount)}
+                {bk.bookAndPay} {formatCOP(chargeAmount)}
                 <ArrowRight size={18} />
               </>
             )}
           </Button>
 
           <p className="text-xs text-center text-muted-foreground mt-4">
-            Pago seguro con Wompi · Sin cobros adicionales · Tu reserva queda confirmada al instante
+            {bk.footerNote}
           </p>
         </div>
       )}

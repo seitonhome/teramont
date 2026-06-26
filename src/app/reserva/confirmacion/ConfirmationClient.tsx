@@ -9,6 +9,9 @@ import { Button } from '@/components/ui/button'
 import { formatCOP, formatDatetimeBogota, buildWhatsAppLink } from '@/lib/utils'
 import { CheckCircle, Clock, AlertCircle, MessageCircle, ArrowRight, Loader2 } from 'lucide-react'
 import type { Booking } from '@/types'
+import { getLocaleClient } from '@/lib/locale'
+import { translations } from '@/lib/i18n'
+import type { Locale } from '@/lib/i18n'
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
 
@@ -17,10 +20,15 @@ export function ConfirmationClient() {
   const bookingId = params.get('booking_id')
   const reference = params.get('reference')
 
+  const [locale, setLocale] = useState<Locale>('es')
   const [booking, setBooking] = useState<Booking | null>(null)
   const [status, setStatus] = useState<'loading' | 'confirmed' | 'pending' | 'failed'>('loading')
   const [originName, setOriginName] = useState('')
   const [destinationName, setDestinationName] = useState('')
+
+  useEffect(() => {
+    setLocale(getLocaleClient())
+  }, [])
 
   useEffect(() => {
     if (!bookingId) {
@@ -30,8 +38,6 @@ export function ConfirmationClient() {
 
     async function verifyAndLoad() {
       try {
-        // If we have a reference, verify payment status directly with Wompi
-        // This is the primary confirmation mechanism (no webhook needed)
         if (reference) {
           const verifyRes = await fetch(
             `/api/payments/wompi/verify?reference=${encodeURIComponent(reference)}`
@@ -41,7 +47,6 @@ export function ConfirmationClient() {
             const wompiStatus: string = verifyData.status
 
             if (wompiStatus === 'APPROVED') {
-              // Fetch full booking details with location names
               const res = await fetch(`/api/bookings/${bookingId}`)
               if (res.ok) {
                 const data = await res.json()
@@ -60,7 +65,6 @@ export function ConfirmationClient() {
           }
         }
 
-        // Fallback: read booking status from DB
         const res = await fetch(`/api/bookings/${bookingId}`)
         if (!res.ok) { setStatus('failed'); return }
         const data = await res.json()
@@ -84,12 +88,14 @@ export function ConfirmationClient() {
     verifyAndLoad()
   }, [bookingId, reference])
 
+  const c = translations[locale].confirmation
+
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <Loader2 size={40} className="animate-spin text-gold mx-auto mb-4" />
-          <p className="text-muted-foreground">Verificando tu pago...</p>
+          <p className="text-muted-foreground">{c.verifying}</p>
         </div>
       </div>
     )
@@ -105,19 +111,17 @@ export function ConfirmationClient() {
               <AlertCircle size={36} className="text-red-500" />
             </div>
             <h1 className="text-3xl font-light mb-3" style={{ fontFamily: 'var(--font-display)' }}>
-              Pago no completado
+              {c.failedTitle}
             </h1>
-            <p className="text-muted-foreground mb-8">
-              No pudimos confirmar tu pago. El horario ha sido liberado. Puedes intentar de nuevo.
-            </p>
+            <p className="text-muted-foreground mb-8">{c.failedText}</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg">
-                <Link href="/reservar">Intentar de nuevo</Link>
+                <Link href="/reservar">{c.tryAgain}</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">
                   <MessageCircle size={18} />
-                  Escribir por WhatsApp
+                  {c.contactWhatsapp}
                 </a>
               </Button>
             </div>
@@ -138,20 +142,18 @@ export function ConfirmationClient() {
               <Clock size={36} className="text-amber-500" />
             </div>
             <h1 className="text-3xl font-light mb-3" style={{ fontFamily: 'var(--font-display)' }}>
-              Pago en proceso
+              {c.pendingTitle}
             </h1>
-            <p className="text-muted-foreground mb-4">
-              Tu pago está siendo procesado. Recibirás una confirmación cuando sea aprobado.
-            </p>
+            <p className="text-muted-foreground mb-4">{c.pendingText}</p>
             {booking && (
               <p className="text-sm font-medium text-foreground mb-8">
-                Código de reserva: <span className="text-gold">{booking.booking_code}</span>
+                {c.bookingCode}: <span className="text-gold">{booking.booking_code}</span>
               </p>
             )}
             <Button asChild variant="outline" size="lg">
               <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">
                 <MessageCircle size={18} />
-                Confirmar por WhatsApp
+                {c.confirmWhatsapp}
               </a>
             </Button>
           </div>
@@ -169,29 +171,22 @@ export function ConfirmationClient() {
     <>
       <Navbar />
       <main className="min-h-screen bg-background pt-20 pb-16">
-        {/* Success header */}
         <div className="text-white py-14" style={{ background: 'linear-gradient(135deg, #060F1E 0%, #0A1628 100%)' }}>
           <div className="max-w-2xl mx-auto px-4 text-center">
             <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
               <CheckCircle size={40} className="text-emerald-400" />
             </div>
-            <h1
-              className="text-4xl font-light text-white mb-2"
-              style={{ fontFamily: 'var(--font-display)' }}
-            >
-              ¡Reserva confirmada!
+            <h1 className="text-4xl font-light text-white mb-2" style={{ fontFamily: 'var(--font-display)' }}>
+              {c.confirmed}
             </h1>
-            <p className="text-stone-400">
-              Tu viaje privado está reservado. Nos vemos pronto.
-            </p>
+            <p style={{ color: 'rgb(140 165 200)' }}>{c.confirmedSub}</p>
           </div>
         </div>
 
         <div className="max-w-2xl mx-auto px-4 py-10 space-y-5">
-          {/* Booking details */}
           <div className="bg-white rounded-xl border border-border p-6 lg:p-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-semibold text-foreground">Detalles de tu reserva</h2>
+              <h2 className="font-semibold text-foreground">{c.bookingDetails}</h2>
               <span className="text-sm font-mono text-gold border border-gold/30 bg-gold/5 px-3 py-1 rounded-full">
                 {booking.booking_code}
               </span>
@@ -199,79 +194,64 @@ export function ConfirmationClient() {
 
             <div className="space-y-3 text-sm">
               <div className="flex justify-between py-2 border-b border-border">
-                <span className="text-muted-foreground">Ruta</span>
+                <span className="text-muted-foreground">{c.route}</span>
                 <span className="font-medium">{originName} → {destinationName}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border">
-                <span className="text-muted-foreground">Fecha y hora</span>
-                <span className="font-medium text-right">
-                  {formatDatetimeBogota(booking.pickup_datetime)}
-                </span>
+                <span className="text-muted-foreground">{c.datetime}</span>
+                <span className="font-medium text-right">{formatDatetimeBogota(booking.pickup_datetime)}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border">
-                <span className="text-muted-foreground">Llegada estimada</span>
-                <span className="font-medium text-right">
-                  {formatDatetimeBogota(booking.estimated_arrival_datetime)}
-                </span>
+                <span className="text-muted-foreground">{c.arrival}</span>
+                <span className="font-medium text-right">{formatDatetimeBogota(booking.estimated_arrival_datetime)}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border">
-                <span className="text-muted-foreground">Dirección de recogida</span>
+                <span className="text-muted-foreground">{c.pickup}</span>
                 <span className="font-medium text-right max-w-[240px]">{booking.pickup_address}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border">
-                <span className="text-muted-foreground">Dirección de destino</span>
+                <span className="text-muted-foreground">{c.dropoff}</span>
                 <span className="font-medium text-right max-w-[240px]">{booking.dropoff_address}</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border">
-                <span className="text-muted-foreground">Pasajeros</span>
+                <span className="text-muted-foreground">{c.passengers}</span>
                 <span className="font-medium">{booking.passengers_count}</span>
               </div>
             </div>
 
-            {/* Payment summary */}
             <div className="mt-5 p-4 bg-secondary/40 rounded-lg space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Precio total</span>
+                <span className="text-muted-foreground">{c.totalPrice}</span>
                 <span className="font-medium">{formatCOP(booking.total_price_cop)}</span>
               </div>
               <div className="flex justify-between text-emerald-700">
-                <span>Anticipo pagado</span>
+                <span>{c.depositPaid}</span>
                 <span className="font-semibold">{formatCOP(booking.deposit_amount_cop)}</span>
               </div>
               {booking.balance_amount_cop > 0 && (
                 <div className="flex justify-between text-amber-700">
-                  <span>Saldo antes del viaje</span>
+                  <span>{c.balanceDue}</span>
                   <span className="font-semibold">{formatCOP(booking.balance_amount_cop)}</span>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Policy reminder */}
           <div className="bg-white rounded-xl border border-border p-6 text-sm text-muted-foreground leading-relaxed">
-            <p className="font-semibold text-foreground mb-2">Políticas de cancelación</p>
-            <p>
-              Cancelaciones realizadas con más de 24 horas de anticipación pueden ser
-              reprogramadas o reembolsadas. Cancelaciones dentro de las 24 horas previas al
-              servicio no son reembolsables.
-            </p>
+            <p className="font-semibold text-foreground mb-2">{c.policies}</p>
+            <p>{c.policiesText}</p>
           </div>
 
-          {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white h-13"
-            >
+            <Button asChild size="lg" className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white h-13">
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle size={18} />
-                Confirmar por WhatsApp
+                {c.confirmWhatsapp}
               </a>
             </Button>
             <Button asChild variant="outline" size="lg" className="flex-1 h-13">
               <Link href="/">
-                Volver al inicio
+                {c.backHome}
                 <ArrowRight size={18} />
               </Link>
             </Button>
