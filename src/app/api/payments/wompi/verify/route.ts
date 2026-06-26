@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { mapWompiStatus } from '@/lib/wompi'
+import { sendCustomerConfirmationEmail, sendAdminNotificationEmail } from '@/lib/emails'
 
 const WOMPI_BASE_URL =
   process.env.WOMPI_ENVIRONMENT === 'production'
@@ -18,10 +19,17 @@ export async function GET(req: NextRequest) {
 
     const supabase = createServiceClient()
 
-    // Find our payment record
+    // Find our payment record with location names
     const { data: payment } = await supabase
       .from('payments')
-      .select('*, booking:booking_id(*)')
+      .select(`
+        *,
+        booking:booking_id(
+          *,
+          origin:origin_location_id(name),
+          destination:destination_location_id(name)
+        )
+      `)
       .eq('provider_reference', reference)
       .single()
 
@@ -31,7 +39,10 @@ export async function GET(req: NextRequest) {
 
     const booking = payment.booking as Record<string, unknown>
 
-    // If already confirmed, no need to call Wompi
+    const originName = (booking.origin as Record<string, string> | null)?.name || ''
+    const destinationName = (booking.destination as Record<string, string> | null)?.name || ''
+
+    // If already confirmed, no need to call Wompi again
     if (
       payment.status === 'APPROVED' ||
       booking.status === 'CONFIRMED' ||
@@ -84,21 +95,40 @@ export async function GET(req: NextRequest) {
         payment.payment_type === 'full' ||
         Math.abs(amountInCents / 100 - Number(booking.total_price_cop)) < 1
 
+      const newBookingStatus = isFullPayment ? 'PAID_FULL' : 'CONFIRMED'
+
       await supabase
         .from('bookings')
-        .update({
-          status: isFullPayment ? 'PAID_FULL' : 'CONFIRMED',
-          payment_status: 'APPROVED',
-        })
+        .update({ status: newBookingStatus, payment_status: 'APPROVED' })
         .eq('id', booking.id as string)
+
+      // Send emails (fire-and-forget — don't block the response)
+      const emailData = {
+        bookingCode: booking.booking_code as string,
+        customerName: booking.customer_name as string,
+        customerEmail: booking.customer_email as string,
+        customerPhone: booking.customer_phone as string,
+        originName,
+        destinationName,
+        pickupDatetime: booking.pickup_datetime as string,
+        estimatedArrival: booking.estimated_arrival_datetime as string,
+        pickupAddress: booking.pickup_address as string,
+        dropoffAddress: booking.dropoff_address as string,
+        passengersCount: booking.passengers_count as number,
+        totalPriceCop: Number(booking.total_price_cop),
+        depositAmountCop: Number(booking.deposit_amount_cop),
+        balanceAmountCop: Number(booking.balance_amount_cop),
+        notes: booking.notes as string | null,
+      }
+
+      Promise.all([
+        sendCustomerConfirmationEmail(emailData),
+        sendAdminNotificationEmail(emailData),
+      ]).catch((err) => console.error('Email send error:', err))
 
       return NextResponse.json({
         status: 'APPROVED',
-        booking: {
-          ...booking,
-          status: isFullPayment ? 'PAID_FULL' : 'CONFIRMED',
-          payment_status: 'APPROVED',
-        },
+        booking: { ...booking, status: newBookingStatus, payment_status: 'APPROVED' },
       })
     }
 
