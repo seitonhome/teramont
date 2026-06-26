@@ -4,7 +4,7 @@ import { createWompiTransaction } from '@/lib/wompi'
 import { z } from 'zod'
 
 const schema = z.object({
-  booking_id: z.string().uuid(),
+  booking_id: z.string().min(1),
   payment_type: z.enum(['deposit', 'full']).default('deposit'),
 })
 

@@ -6,8 +6,8 @@ import { addMinutes } from 'date-fns'
 import { z } from 'zod'
 
 const schema = z.object({
-  origin_location_id: z.string().uuid(),
-  destination_location_id: z.string().uuid(),
+  origin_location_id: z.string().min(1),
+  destination_location_id: z.string().min(1),
   pickup_datetime: z.string().datetime({ offset: true }),
   passengers_count: z.number().int().min(1).max(10),
   luggage_count: z.number().int().min(0).max(20),
