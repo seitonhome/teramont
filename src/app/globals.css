@@ -1,27 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: 250 245 235;
-  --foreground: 28 20 14;
+  /* Nocturno Caribe — azul medianoche + champán dorado + marfil perla */
+  --background: 248 246 242;        /* marfil perla: limpio, cálido, lujoso */
+  --foreground: 10 22 40;           /* azul medianoche: confianza, autoridad */
   --card: 255 255 255;
-  --card-foreground: 28 20 14;
+  --card-foreground: 10 22 40;
   --popover: 255 255 255;
-  --popover-foreground: 28 20 14;
-  --primary: 28 20 14;
-  --primary-foreground: 250 245 235;
-  --secondary: 240 233 220;
-  --secondary-foreground: 28 20 14;
-  --muted: 240 233 220;
-  --muted-foreground: 120 100 80;
-  --accent: 235 225 210;
-  --accent-foreground: 28 20 14;
-  --destructive: 220 50 50;
+  --popover-foreground: 10 22 40;
+  --primary: 10 22 40;              /* azul medianoche */
+  --primary-foreground: 248 246 242;
+  --secondary: 228 234 244;         /* azul perla muy suave: complementa el navy */
+  --secondary-foreground: 10 22 40;
+  --muted: 228 234 244;
+  --muted-foreground: 88 104 124;   /* slate azulado: texto secundario sofisticado */
+  --accent: 220 230 248;
+  --accent-foreground: 10 22 40;
+  --destructive: 196 48 48;
   --destructive-foreground: 255 255 255;
-  --border: 220 210 195;
-  --input: 220 210 195;
-  --ring: 28 20 14;
-  --gold: 194 142 50;
-  --gold-light: 245 225 160;
+  --border: 210 218 230;            /* borde con leve tono azul */
+  --input: 210 218 230;
+  --ring: 10 22 40;
+  --gold: 193 148 54;               /* champán dorado: más rico y saturado */
+  --gold-light: 244 232 196;        /* champán claro para fondos */
 }
 
 @theme inline {

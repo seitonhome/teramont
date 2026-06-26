@@ -5,15 +5,15 @@ import { ArrowRight, ChevronDown } from 'lucide-react'
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-stone-900 via-stone-800 to-stone-950" />
+      {/* Background: azul medianoche con degradado profundo */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #060F1E 0%, #0A1628 45%, #0D2144 100%)' }} />
 
-      {/* Decorative pattern */}
-      <div className="absolute inset-0 opacity-5">
+      {/* Decorative dot pattern en dorado champán */}
+      <div className="absolute inset-0 opacity-[0.04]">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, rgb(194 142 50) 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 2px 2px, rgb(193 148 54) 1px, transparent 0)`,
             backgroundSize: '40px 40px',
           }}
         />
@@ -44,14 +44,14 @@ export function Hero() {
         </h1>
 
         {/* Subheadline */}
-        <p className="text-lg sm:text-xl text-stone-300 max-w-2xl mx-auto mb-4 leading-relaxed font-light">
+        <p className="text-lg sm:text-xl max-w-2xl mx-auto mb-4 leading-relaxed font-light" style={{ color: 'rgb(180 196 220)' }}>
           Muévete entre{' '}
           <span className="text-white font-medium">Cartagena, Barú y Barranquilla</span>{' '}
           en una Volkswagen Teramont, con comodidad, privacidad y tranquilidad
           desde el primer minuto.
         </p>
 
-        <p className="text-stone-400 text-sm tracking-wider uppercase mb-12">
+        <p className="text-sm tracking-wider uppercase mb-12" style={{ color: 'rgb(100 130 165)' }}>
           Tu ruta · Tu horario · Tu espacio
         </p>
 
@@ -79,7 +79,7 @@ export function Hero() {
         </div>
 
         {/* Trust indicators */}
-        <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-stone-400 text-xs tracking-widest uppercase">
+        <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-xs tracking-widest uppercase" style={{ color: 'rgb(100 130 165)' }}>
           {['Vehículo exclusivo', 'Sin compartir', 'Pago seguro', 'Confirmación inmediata'].map(
             (item) => (
               <span key={item} className="flex items-center gap-2">
@@ -92,7 +92,7 @@ export function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-stone-500">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ color: 'rgb(80 110 150)' }}>
         <span className="text-xs tracking-widest uppercase">Explorar</span>
         <ChevronDown size={16} className="animate-bounce" />
       </div>

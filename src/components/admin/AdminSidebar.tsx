@@ -36,16 +36,16 @@ export function AdminSidebar() {
   }
 
   return (
-    <aside className="w-60 flex-shrink-0 bg-stone-950 text-stone-300 flex flex-col min-h-screen">
+    <aside className="w-60 flex-shrink-0 flex flex-col min-h-screen" style={{ background: '#060F1E', color: 'rgb(160 180 210)' }}>
       {/* Logo */}
-      <div className="px-6 py-6 border-b border-stone-800">
+      <div className="px-6 py-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-sm bg-gold/20 flex items-center justify-center">
             <Car size={16} className="text-gold" />
           </div>
           <div>
             <p className="text-xs font-semibold text-white tracking-wide">Teramont</p>
-            <p className="text-[10px] text-stone-500 uppercase tracking-wider">Admin</p>
+            <p className="text-[10px] uppercase tracking-wider" style={{ color: 'rgb(80 110 150)' }}>Admin</p>
           </div>
         </div>
       </div>
@@ -62,9 +62,13 @@ export function AdminSidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors',
                 active
-                  ? 'bg-stone-800 text-white'
-                  : 'text-stone-400 hover:bg-stone-800/60 hover:text-stone-200'
+                  ? 'text-white'
+                  : 'hover:text-white'
               )}
+              style={active
+                ? { background: 'rgba(193,148,54,0.12)', color: 'white' }
+                : { color: 'rgb(120 148 185)' }
+              }
             >
               <Icon size={16} className={active ? 'text-gold' : ''} />
               {item.label}
@@ -74,10 +78,11 @@ export function AdminSidebar() {
       </nav>
 
       {/* Logout */}
-      <div className="px-3 py-4 border-t border-stone-800">
+      <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-stone-500 hover:text-red-400 hover:bg-stone-800/60 transition-colors w-full"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm hover:text-red-400 transition-colors w-full"
+          style={{ color: 'rgb(80 110 150)' }}
         >
           <LogOut size={16} />
           Cerrar sesión

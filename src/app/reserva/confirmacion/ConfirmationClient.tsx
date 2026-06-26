@@ -170,7 +170,7 @@ export function ConfirmationClient() {
       <Navbar />
       <main className="min-h-screen bg-background pt-20 pb-16">
         {/* Success header */}
-        <div className="bg-stone-950 text-white py-14">
+        <div className="text-white py-14" style={{ background: 'linear-gradient(135deg, #060F1E 0%, #0A1628 100%)' }}>
           <div className="max-w-2xl mx-auto px-4 text-center">
             <div className="w-20 h-20 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
               <CheckCircle size={40} className="text-emerald-400" />
