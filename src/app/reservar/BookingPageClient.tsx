@@ -26,7 +26,7 @@ export function BookingPageClient() {
             >
               Viaje privado premium
             </h1>
-            <p className="text-stone-400 text-base">
+            <p className="text-base" style={{ color: 'rgb(140 165 200)' }}>
               Completa los datos y confirma tu reserva en minutos.
               {from && to ? ` Ruta seleccionada: ${from} → ${to}.` : ''}
             </p>

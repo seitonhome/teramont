@@ -1,13 +1,21 @@
+'use client'
+
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { MessageCircle, Mail } from 'lucide-react'
-import { getLocale } from '@/lib/locale-server'
+import { getLocaleClient } from '@/lib/locale'
 import { translations } from '@/lib/i18n'
 
-export async function Footer() {
-  const locale = await getLocale()
-  const f = translations[locale].footer
+export function Footer() {
+  const [locale, setLocale] = useState<'es' | 'en'>('es')
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
   const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'hola@teramontrides.com'
+
+  useEffect(() => {
+    setLocale(getLocaleClient())
+  }, [])
+
+  const f = translations[locale].footer
 
   return (
     <footer style={{ background: '#060F1E', color: 'rgb(120 148 185)' }}>
@@ -73,9 +81,7 @@ export async function Footer() {
             <ul className="space-y-2 text-sm">
               {['Cartagena → Barranquilla', 'Barranquilla → Cartagena', 'Cartagena → Barú', 'Barú → Cartagena', 'Barranquilla → Barú', 'Barú → Barranquilla'].map((r) => (
                 <li key={r}>
-                  <Link href="/reservar" className="hover:text-gold transition-colors">
-                    {r}
-                  </Link>
+                  <Link href="/reservar" className="hover:text-gold transition-colors">{r}</Link>
                 </li>
               ))}
             </ul>
