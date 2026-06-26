@@ -6,14 +6,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
 
-    // Verify webhook signature
-    const signature = req.headers.get('wompi-signature') || ''
-    if (!verifyWompiWebhookSignature(body, signature)) {
-      console.warn('Wompi webhook signature verification failed')
-      // In sandbox, we allow through; in production this should reject
-      if (process.env.WOMPI_ENVIRONMENT === 'production') {
-        return NextResponse.json({ error: 'Firma inválida' }, { status: 401 })
-      }
+    if (!verifyWompiWebhookSignature(body)) {
+      return NextResponse.json({ error: 'Firma inválida' }, { status: 401 })
     }
 
     const event = body?.event
