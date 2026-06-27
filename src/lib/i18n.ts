@@ -224,7 +224,7 @@ export const translations = {
       perVehicleLabel: 'por vehículo',
       selectTimeError: 'Selecciona una hora disponible',
       sundaySurcharge: 'Recargo dominical/festivo (10%)',
-      sundaySurchargeNote: 'Los servicios en domingo y festivos colombianos tienen un recargo del 10% por ley.',
+      sundaySurchargeNote: 'Los servicios en domingo y festivos colombianos tienen un recargo del 10%.',
     },
     confirmation: {
       verifying: 'Verificando tu pago...',
