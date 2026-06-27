@@ -223,6 +223,8 @@ export const translations = {
       sameOriginDest: 'El origen y destino no pueden ser iguales',
       perVehicleLabel: 'por vehículo',
       selectTimeError: 'Selecciona una hora disponible',
+      sundaySurcharge: 'Recargo dominical/festivo (10%)',
+      sundaySurchargeNote: 'Los servicios en domingo y festivos colombianos tienen un recargo del 10% por ley.',
     },
     confirmation: {
       verifying: 'Verificando tu pago...',
@@ -478,6 +480,8 @@ export const translations = {
       sameOriginDest: 'Origin and destination cannot be the same',
       perVehicleLabel: 'per vehicle',
       selectTimeError: 'Please select an available time',
+      sundaySurcharge: 'Sunday/holiday surcharge (10%)',
+      sundaySurchargeNote: 'Services on Sundays and Colombian public holidays have a 10% surcharge.',
     },
     confirmation: {
       verifying: 'Verifying your payment...',

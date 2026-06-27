@@ -44,6 +44,12 @@ const EDITABLE_SETTINGS = [
     hint: 'Cuántos días en el futuro puede reservar un cliente',
   },
   {
+    key: 'sunday_surcharge_pct',
+    label: 'Recargo dominical y festivos (%)',
+    type: 'number',
+    hint: 'Porcentaje adicional que se cobra en domingos y festivos colombianos (ej: 10)',
+  },
+  {
     key: 'whatsapp_number',
     label: 'Número de WhatsApp',
     type: 'text',

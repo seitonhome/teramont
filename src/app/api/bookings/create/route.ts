@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { isSlotAvailable } from '@/lib/availability'
 import { generateBookingCode } from '@/lib/utils'
+import { isSundayOrHoliday } from '@/lib/surcharge'
 import { addMinutes } from 'date-fns'
 import { z } from 'zod'
 
@@ -85,6 +86,7 @@ export async function POST(req: NextRequest) {
     const minNoticeHours = parseInt(settings.min_booking_notice_hours || '6')
     const maxDaysAhead = parseInt(settings.max_booking_days_ahead || '60')
     const depositPercentage = parseInt(settings.deposit_percentage || '50')
+    const sundaySurchargePct = parseInt(settings.sunday_surcharge_pct || '10')
     const locationMode = settings.vehicle_location_mode || 'persistent'
 
     // Validate future date limit
@@ -129,8 +131,12 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Calculate prices server-side
-    const totalPrice = Number(route.base_price_cop)
+    // Calculate prices server-side (with Sunday/holiday surcharge)
+    const dateStr = pickupDate.toISOString().slice(0, 10)
+    const surchargeAmount = isSundayOrHoliday(dateStr)
+      ? Math.round(Number(route.base_price_cop) * sundaySurchargePct / 100)
+      : 0
+    const totalPrice = Number(route.base_price_cop) + surchargeAmount
     const depositAmount = Math.round(totalPrice * (depositPercentage / 100))
     const balanceAmount = totalPrice - depositAmount
     const chargeAmount = data.payment_type === 'full' ? totalPrice : depositAmount

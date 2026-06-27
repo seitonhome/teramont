@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { formatCOP, minutesToHoursLabel } from '@/lib/utils'
+import { isSundayOrHoliday } from '@/lib/surcharge'
 import { format, addDays } from 'date-fns'
 import { Clock, AlertCircle, Loader2, ArrowRight, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -157,7 +158,10 @@ export function BookingForm({
     fetchSlots()
   }, [fetchSlots])
 
-  const totalPrice = routeInfo?.base_price_cop || 0
+  const basePrice = routeInfo?.base_price_cop || 0
+  const isSurchargeDay = pickupDate ? isSundayOrHoliday(pickupDate) : false
+  const surchargeAmount = isSurchargeDay ? Math.round(basePrice * 10 / 100) : 0
+  const totalPrice = basePrice + surchargeAmount
   const depositAmount = Math.round(totalPrice * (depositPct / 100))
   const balanceAmount = totalPrice - depositAmount
   const chargeAmount = paymentType === 'full' ? totalPrice : depositAmount
@@ -306,6 +310,12 @@ export function BookingForm({
             {...register('pickup_date')}
             className={errors.pickup_date ? 'border-red-400' : ''}
           />
+          {isSurchargeDay && (
+            <div className="mt-2 flex items-start gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+              <AlertCircle size={13} className="flex-shrink-0 mt-0.5" />
+              {bk.sundaySurchargeNote}
+            </div>
+          )}
         </div>
 
         {pickupDate && originId && destinationId && (
@@ -532,8 +542,14 @@ export function BookingForm({
           <div className="bg-secondary/40 rounded-lg p-4 mb-6 space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-muted-foreground">{bk.serviceFee}</span>
-              <span className="font-medium">{formatCOP(totalPrice)}</span>
+              <span className="font-medium">{formatCOP(basePrice)}</span>
             </div>
+            {isSurchargeDay && surchargeAmount > 0 && (
+              <div className="flex justify-between text-amber-700">
+                <span>{bk.sundaySurcharge}</span>
+                <span className="font-medium">+{formatCOP(surchargeAmount)}</span>
+              </div>
+            )}
             {paymentType === 'deposit' && (
               <div className="flex justify-between">
                 <span className="text-muted-foreground">{bk.pendingBalance}</span>
