@@ -89,6 +89,7 @@ export async function Routes() {
           {displayRoutes.map((rawRoute) => {
             const route = normalizeRoute(rawRoute as Record<string, unknown>)
             const highlight = r.highlights[route.slug as keyof typeof r.highlights]
+            const description = r.descriptions[route.slug as keyof typeof r.descriptions]
 
             return (
               <div
@@ -119,6 +120,12 @@ export async function Routes() {
                       </div>
                     </div>
                   </div>
+
+                  {description && (
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-5">
+                      {description}
+                    </p>
+                  )}
 
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
