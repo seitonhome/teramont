@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       booking: data,
-      origin_name: (data.origin as { name: string })?.name || '',
-      destination_name: (data.destination as { name: string })?.name || '',
+      origin_name: (data.origin as unknown as { name: string })?.name || '',
+      destination_name: (data.destination as unknown as { name: string })?.name || '',
     })
   } catch {
     return NextResponse.json({ error: 'Error interno' }, { status: 500 })
