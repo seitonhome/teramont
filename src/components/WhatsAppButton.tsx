@@ -17,7 +17,7 @@ export function WhatsAppButton() {
   }, [])
 
   const w = translations[locale].whatsapp
-  const url = `https://wa.me/${WHATSAPP}`
+  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(w.message)}`
 
   return (
     <div

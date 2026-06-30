@@ -43,6 +43,7 @@ const schema = z.object({
   customer_phone: z.string().min(7).max(20),
   pickup_address: z.string().min(5),
   dropoff_address: z.string().min(5),
+  flight_number: z.string().max(20).optional(),
   notes: z.string().max(500).optional(),
   payment_type: z.enum(['deposit', 'full']),
 })
@@ -193,7 +194,10 @@ export function BookingForm({
           customer_phone: formData.customer_phone,
           pickup_address: formData.pickup_address,
           dropoff_address: formData.dropoff_address,
-          notes: formData.notes,
+          notes: [
+            formData.flight_number ? `✈ Vuelo: ${formData.flight_number}` : null,
+            formData.notes,
+          ].filter(Boolean).join('\n') || undefined,
           payment_type: formData.payment_type,
         }),
       })
@@ -440,6 +444,14 @@ export function BookingForm({
             {errors.dropoff_address && (
               <p className="text-red-500 text-xs mt-1">{bk.dropoffAddress}</p>
             )}
+          </div>
+
+          <div>
+            <Label className="mb-2 block text-sm">{bk.flightNumber}</Label>
+            <Input
+              placeholder={bk.flightNumberPlaceholder}
+              {...register('flight_number')}
+            />
           </div>
 
           <div>

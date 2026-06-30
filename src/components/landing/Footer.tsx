@@ -16,6 +16,7 @@ export function Footer() {
   }, [])
 
   const f = translations[locale].footer
+  const whatsappMessage = translations[locale].whatsapp.message
 
   return (
     <footer style={{ background: '#060F1E', color: 'rgb(120 148 185)' }}>
@@ -53,7 +54,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a
-                href={`https://wa.me/${whatsappNumber}`}
+                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors"
@@ -98,6 +99,7 @@ export function Footer() {
               <li><Link href="/politicas" className="hover:text-gold transition-colors">{f.links.cancellation}</Link></li>
               <li><Link href="/politicas#terminos" className="hover:text-gold transition-colors">{f.links.terms}</Link></li>
               <li><Link href="/politicas#privacidad" className="hover:text-gold transition-colors">{f.links.privacy}</Link></li>
+              <li><Link href="/mi-reserva" className="hover:text-gold transition-colors">{f.links.myBooking}</Link></li>
               <li><a href={`mailto:${contactEmail}`} className="hover:text-gold transition-colors">{contactEmail}</a></li>
             </ul>
           </div>

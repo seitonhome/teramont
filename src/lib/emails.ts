@@ -179,6 +179,96 @@ export async function sendCustomerConfirmationEmail(data: BookingEmailData) {
   })
 }
 
+export async function sendReminderEmail(data: BookingEmailData) {
+  const whatsappUrl = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hola, tengo una reserva confirmada. Código: ${data.bookingCode}`)}`
+
+  const html = `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#F8F6F2;font-family:Georgia,serif;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;">
+    <div style="background:linear-gradient(135deg,#060F1E 0%,#0A1628 100%);padding:40px 40px 32px;text-align:center;">
+      <p style="margin:0 0 4px;color:#C19436;font-size:11px;letter-spacing:4px;text-transform:uppercase;font-family:Arial,sans-serif;">Teramont</p>
+      <p style="margin:0;color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:3px;text-transform:uppercase;font-family:Arial,sans-serif;">Private Rides</p>
+      <p style="margin:24px 0 0;font-size:36px;">🚗</p>
+      <h1 style="margin:12px 0 8px;color:#ffffff;font-size:26px;font-weight:300;">Tu viaje es mañana</h1>
+      <p style="margin:0;color:rgba(255,255,255,0.6);font-size:14px;">Te recordamos los detalles de tu reserva.</p>
+    </div>
+
+    <div style="background:#0A1628;padding:16px 40px;text-align:center;">
+      <p style="margin:0;color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">Código de reserva</p>
+      <p style="margin:4px 0 0;color:#C19436;font-size:22px;font-family:monospace;letter-spacing:3px;">${data.bookingCode}</p>
+    </div>
+
+    <div style="padding:40px;">
+      <p style="margin:0 0 24px;color:#4A5568;font-size:15px;line-height:1.6;">
+        Hola <strong style="color:#0A1628;">${data.customerName}</strong>, mañana es tu viaje con Teramont Private Rides. Aquí tienes todo lo que necesitas saber:
+      </p>
+
+      <div style="background:#F8F6F2;border-radius:12px;padding:24px;margin-bottom:20px;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr>
+            <td style="padding:8px 0;border-bottom:1px solid #E4DACE;vertical-align:top;">
+              <span style="color:#8A8070;font-size:12px;text-transform:uppercase;letter-spacing:1px;font-family:Arial,sans-serif;">Ruta</span><br>
+              <strong style="color:#0A1628;font-size:16px;">${data.originName} → ${data.destinationName}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 0;border-bottom:1px solid #E4DACE;vertical-align:top;">
+              <span style="color:#8A8070;font-size:12px;text-transform:uppercase;letter-spacing:1px;font-family:Arial,sans-serif;">Hora de recogida</span><br>
+              <strong style="color:#C19436;font-size:18px;">${formatDatetimeLocal(data.pickupDatetime)}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 0;border-bottom:1px solid #E4DACE;vertical-align:top;">
+              <span style="color:#8A8070;font-size:12px;text-transform:uppercase;letter-spacing:1px;font-family:Arial,sans-serif;">Te recogemos en</span><br>
+              <strong style="color:#0A1628;font-size:15px;">${data.pickupAddress}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 0;vertical-align:top;">
+              <span style="color:#8A8070;font-size:12px;text-transform:uppercase;letter-spacing:1px;font-family:Arial,sans-serif;">Tu destino</span><br>
+              <span style="color:#0A1628;font-size:15px;">${data.dropoffAddress}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      ${data.balanceAmountCop > 0 ? `
+      <div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;padding:16px;margin-bottom:24px;">
+        <p style="margin:0;color:#92400E;font-size:14px;">
+          💳 <strong>Recuerda:</strong> tienes un saldo pendiente de <strong>${formatCOP(data.balanceAmountCop)}</strong> que debes pagar en efectivo o transferencia antes de iniciar el viaje.
+        </p>
+      </div>` : `
+      <div style="background:#D1FAE5;border:1px solid #A7F3D0;border-radius:8px;padding:16px;margin-bottom:24px;">
+        <p style="margin:0;color:#065F46;font-size:14px;">✅ <strong>Tu pago está completo.</strong> No tienes ningún saldo pendiente.</p>
+      </div>`}
+
+      <div style="text-align:center;margin:32px 0;">
+        <a href="${whatsappUrl}" style="display:inline-block;background:#25D366;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:6px;font-size:15px;font-weight:600;font-family:Arial,sans-serif;">
+          📱 Escribir por WhatsApp
+        </a>
+        <p style="margin:12px 0 0;color:#9CA3AF;font-size:12px;">¿Tienes alguna pregunta? Estamos disponibles.</p>
+      </div>
+    </div>
+
+    <div style="background:#060F1E;padding:24px 40px;text-align:center;">
+      <p style="margin:0 0 4px;color:rgba(255,255,255,0.4);font-size:12px;font-family:Arial,sans-serif;">Teramont Private Rides · Costa Caribe Colombiana</p>
+      <p style="margin:0;color:rgba(255,255,255,0.25);font-size:11px;font-family:Arial,sans-serif;">${ADMIN_EMAIL}</p>
+    </div>
+  </div>
+</body>
+</html>`
+
+  return resend.emails.send({
+    from: FROM,
+    to: data.customerEmail,
+    subject: `🚗 Tu viaje es mañana — ${data.originName} → ${data.destinationName} | ${data.bookingCode}`,
+    html,
+  })
+}
+
 export async function sendAdminNotificationEmail(data: BookingEmailData) {
   const html = `
 <!DOCTYPE html>

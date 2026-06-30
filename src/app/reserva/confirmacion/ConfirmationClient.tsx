@@ -256,6 +256,19 @@ export function ConfirmationClient() {
               </Link>
             </Button>
           </div>
+
+          {originName && destinationName && (
+            <div className="rounded-xl border border-gold/20 bg-gold/5 p-5 text-center">
+              <p className="font-medium text-foreground text-sm mb-1">{c.returnTrip}</p>
+              <p className="text-muted-foreground text-xs mb-4">{c.returnTripSub}</p>
+              <Button asChild size="sm" className="bg-gold hover:bg-gold/90 text-white">
+                <Link href={`/reservar?from=${encodeURIComponent(destinationName)}&to=${encodeURIComponent(originName)}`}>
+                  {c.returnTripCta}
+                  <ArrowRight size={14} />
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
       </main>
       <Footer />

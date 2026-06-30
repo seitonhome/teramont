@@ -168,7 +168,7 @@ export async function Routes() {
             {r.customDestSub}
           </p>
           <a
-            href={`https://wa.me/${whatsappNumber}`}
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(r.customDestMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-sm text-sm font-medium text-white transition-colors hover:opacity-90"

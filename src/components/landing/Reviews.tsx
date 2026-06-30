@@ -3,82 +3,22 @@
 import { useState, useEffect } from 'react'
 import { getLocaleClient } from '@/lib/locale'
 
-const reviews = {
-  es: [
-    {
-      name: 'Valentina Ospina',
-      location: 'Medellín',
-      date: 'marzo 2025',
-      rating: 5,
-      text: 'Fuimos 4 personas de Cartagena a Barranquilla y el servicio fue excelente. El carro impecable, llegaron puntual y el conductor muy amable. Sin duda lo volvemos a usar.',
-    },
-    {
-      name: 'Carlos M.',
-      location: 'Bogotá',
-      date: 'enero 2026',
-      rating: 5,
-      text: 'Todo perfecto. Reservé por la página sin problema y el pago fue rápido. Llegaron a la hora exacta 👌',
-    },
-    {
-      name: 'Daniela Ruiz',
-      location: 'Cartagena',
-      date: 'enero 2025',
-      rating: 5,
-      text: 'Viajé con mi mamá y mis dos hijos a Barú. Cómodos, sin estrés, sin paradas. Vale cada peso.',
-    },
-    {
-      name: 'Jorge Peña',
-      location: 'Barranquilla',
-      date: 'febrero 2025',
-      rating: 5,
-      text: 'Usé este servicio para ir a Cartagena por trabajo. Puntual, el carro en perfectas condiciones y el conductor muy profesional. Recomendado 100%.',
-    },
-    {
-      name: 'Laura T.',
-      location: 'Cali',
-      date: 'marzo 2026',
-      rating: 5,
-      text: 'La verdad no esperaba que fuera tan fácil reservar. El proceso online rapidísimo y el viaje sin ningún contratiempo.',
-    },
-  ],
-  en: [
-    {
-      name: 'Valentina Ospina',
-      location: 'Medellín',
-      date: 'March 2025',
-      rating: 5,
-      text: 'We were 4 people traveling from Cartagena to Barranquilla and the service was excellent. The car was spotless, they arrived on time and the driver was very friendly. We will definitely use them again.',
-    },
-    {
-      name: 'Carlos M.',
-      location: 'Bogotá',
-      date: 'January 2026',
-      rating: 5,
-      text: 'Everything perfect. Booked through the website without any issues and the payment was quick. They arrived right on time 👌',
-    },
-    {
-      name: 'Daniela Ruiz',
-      location: 'Cartagena',
-      date: 'January 2025',
-      rating: 5,
-      text: 'I traveled with my mom and two kids to Barú. Comfortable, stress-free, no stops. Worth every penny.',
-    },
-    {
-      name: 'Mike T.',
-      location: 'USA',
-      date: 'February 2025',
-      rating: 5,
-      text: 'Used this service for a business trip to Cartagena. Punctual, car in perfect condition and very professional driver. Highly recommended.',
-    },
-    {
-      name: 'Laura T.',
-      location: 'Cali',
-      date: 'March 2026',
-      rating: 5,
-      text: "Honestly didn't expect booking to be this easy. Super fast online process and the trip went without a hitch.",
-    },
-  ],
+interface Review {
+  name: string
+  location: string
+  date: string
+  rating: number
+  text_es: string
+  text_en?: string | null
 }
+
+const FALLBACK: Review[] = [
+  { name: 'Valentina Ospina', location: 'Medellín', date: 'marzo 2025', rating: 5, text_es: 'Fuimos 4 personas de Cartagena a Barranquilla y el servicio fue excelente. El carro impecable, llegaron puntual y el conductor muy amable. Sin duda lo volvemos a usar.', text_en: 'We were 4 people traveling from Cartagena to Barranquilla and the service was excellent. The car was spotless, they arrived on time and the driver was very friendly. We will definitely use them again.' },
+  { name: 'Carlos M.', location: 'Bogotá', date: 'enero 2026', rating: 5, text_es: 'Todo perfecto. Reservé por la página sin problema y el pago fue rápido. Llegaron a la hora exacta 👌', text_en: 'Everything perfect. Booked through the website without any issues and the payment was quick. They arrived right on time 👌' },
+  { name: 'Daniela Ruiz', location: 'Cartagena', date: 'enero 2025', rating: 5, text_es: 'Viajé con mi mamá y mis dos hijos a Barú. Cómodos, sin estrés, sin paradas. Vale cada peso.', text_en: 'I traveled with my mom and two kids to Barú. Comfortable, stress-free, no stops. Worth every penny.' },
+  { name: 'Jorge Peña', location: 'Barranquilla', date: 'febrero 2025', rating: 5, text_es: 'Usé este servicio para ir a Cartagena por trabajo. Puntual, el carro en perfectas condiciones y el conductor muy profesional. Recomendado 100%.', text_en: 'Used this service for a business trip to Cartagena. Punctual, car in perfect condition and very professional driver. Highly recommended.' },
+  { name: 'Laura T.', location: 'Cali', date: 'marzo 2026', rating: 5, text_es: 'La verdad no esperaba que fuera tan fácil reservar. El proceso online rapidísimo y el viaje sin ningún contratiempo.', text_en: "Honestly didn't expect booking to be this easy. Super fast online process and the trip went without a hitch." },
+]
 
 function Stars({ count }: { count: number }) {
   return (
@@ -92,12 +32,36 @@ function Stars({ count }: { count: number }) {
 
 export function Reviews() {
   const [locale, setLocale] = useState<'es' | 'en'>('es')
+  const [reviews, setReviews] = useState<Review[]>([])
 
   useEffect(() => {
     setLocale(getLocaleClient())
   }, [])
 
-  const list = reviews[locale]
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const res = await fetch('/api/reviews')
+        if (res.ok) {
+          const data = await res.json()
+          setReviews(data.length > 0 ? data : FALLBACK)
+        } else {
+          setReviews(FALLBACK)
+        }
+      } catch {
+        setReviews(FALLBACK)
+      }
+    }
+    fetchReviews()
+  }, [])
+
+  const list = reviews.map((r) => ({
+    name: r.name,
+    location: r.location,
+    date: r.date,
+    rating: r.rating,
+    text: locale === 'en' && r.text_en ? r.text_en : r.text_es,
+  }))
 
   return (
     <section className="py-20 lg:py-28" style={{ background: 'linear-gradient(180deg, #F8F6F2 0%, #ffffff 100%)' }}>
@@ -132,17 +96,18 @@ export function Reviews() {
           ))}
         </div>
 
-        {/* Average rating */}
-        <div className="mt-10 text-center">
-          <div className="inline-flex items-center gap-3 bg-white border border-border rounded-full px-6 py-3">
-            <Stars count={5} />
-            <span className="text-sm font-semibold text-foreground">5.0</span>
-            <span className="text-muted-foreground text-sm">·</span>
-            <span className="text-muted-foreground text-sm">
-              {locale === 'es' ? '5 reseñas verificadas' : '5 verified reviews'}
-            </span>
+        {list.length > 0 && (
+          <div className="mt-10 text-center">
+            <div className="inline-flex items-center gap-3 bg-white border border-border rounded-full px-6 py-3">
+              <Stars count={5} />
+              <span className="text-sm font-semibold text-foreground">5.0</span>
+              <span className="text-muted-foreground text-sm">·</span>
+              <span className="text-muted-foreground text-sm">
+                {locale === 'es' ? `${list.length} reseñas verificadas` : `${list.length} verified reviews`}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )
