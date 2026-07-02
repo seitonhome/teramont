@@ -30,7 +30,7 @@ export function CarGallery() {
         {/* Header */}
         <div className="text-center mb-12">
           <p className="text-gold text-xs tracking-[0.4em] uppercase font-medium mb-4">
-            {locale === 'es' ? 'El vehículo' : 'The vehicle'}
+            {locale === 'es' ? 'Tu vehículo para este viaje' : 'Your ride for this trip'}
           </p>
           <h2
             className="text-4xl lg:text-5xl font-light text-foreground"
@@ -40,8 +40,8 @@ export function CarGallery() {
           </h2>
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
             {locale === 'es'
-              ? 'SUV premium. Aire acondicionado, amplio maletero, asientos cómodos y viaje privado sin compartir.'
-              : 'Premium SUV. Air conditioning, large trunk, comfortable seats and a fully private ride.'}
+              ? 'El carro en el que llegarías si manejaras tú. Aire acondicionado, espacio de sobra para las maletas de todos y asientos que se sienten bien incluso después de horas de carretera.'
+              : 'The car you\'d arrive in if you drove yourself. Air conditioning, ample room for everyone\'s luggage and seats that still feel good after hours on the road.'}
           </p>
         </div>
 

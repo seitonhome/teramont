@@ -68,10 +68,10 @@ export function Reviews() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <p className="text-gold text-xs tracking-[0.4em] uppercase font-medium mb-4">
-            {locale === 'es' ? 'Opiniones' : 'Reviews'}
+            {locale === 'es' ? 'Historias reales' : 'Real stories'}
           </p>
           <h2 className="text-4xl lg:text-5xl font-light text-foreground" style={{ fontFamily: 'var(--font-display)' }}>
-            {locale === 'es' ? 'Lo que dicen nuestros pasajeros' : 'What our passengers say'}
+            {locale === 'es' ? 'Lo que dicen quienes ya llegaron con nosotros' : 'What travelers say after riding with us'}
           </h2>
         </div>
 

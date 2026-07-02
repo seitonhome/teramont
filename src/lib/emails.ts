@@ -58,8 +58,8 @@ export async function sendCustomerConfirmationEmail(data: BookingEmailData) {
       <div style="margin:24px auto 0;width:48px;height:48px;background:rgba(34,197,94,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;">
         <p style="margin:0;font-size:24px;">✓</p>
       </div>
-      <h1 style="margin:16px 0 8px;color:#ffffff;font-size:28px;font-weight:300;letter-spacing:1px;">¡Reserva confirmada!</h1>
-      <p style="margin:0;color:rgba(255,255,255,0.6);font-size:14px;">Tu viaje privado está reservado.</p>
+      <h1 style="margin:16px 0 8px;color:#ffffff;font-size:28px;font-weight:300;letter-spacing:1px;">¡Tu viaje quedó confirmado!</h1>
+      <p style="margin:0;color:rgba(255,255,255,0.6);font-size:14px;">Ya es oficial: nos vemos en el Caribe.</p>
     </div>
 
     <!-- Booking code -->
@@ -72,7 +72,7 @@ export async function sendCustomerConfirmationEmail(data: BookingEmailData) {
     <div style="padding:40px;">
 
       <p style="margin:0 0 24px;color:#4A5568;font-size:15px;line-height:1.6;">
-        Hola <strong style="color:#0A1628;">${data.customerName}</strong>, tu reserva ha sido confirmada. Aquí están todos los detalles de tu viaje:
+        Hola <strong style="color:#0A1628;">${data.customerName}</strong>, tu viaje quedó confirmado. Esto es lo que necesitas saber antes de subirte:
       </p>
 
       <!-- Route & time -->
@@ -122,7 +122,7 @@ export async function sendCustomerConfirmationEmail(data: BookingEmailData) {
         <p style="margin:0 0 16px;color:#8A8070;font-size:12px;text-transform:uppercase;letter-spacing:1px;font-family:Arial,sans-serif;">Resumen de pago</p>
         <table style="width:100%;border-collapse:collapse;font-size:14px;">
           <tr>
-            <td style="padding:4px 0;color:#6B7280;">Precio total del servicio</td>
+            <td style="padding:4px 0;color:#6B7280;">Precio total del viaje</td>
             <td style="padding:4px 0;text-align:right;color:#0A1628;font-weight:600;">${formatCOP(data.totalPriceCop)}</td>
           </tr>
           <tr>
@@ -193,7 +193,7 @@ export async function sendReminderEmail(data: BookingEmailData) {
       <p style="margin:0;color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:3px;text-transform:uppercase;font-family:Arial,sans-serif;">Private Rides</p>
       <p style="margin:24px 0 0;font-size:36px;">🚗</p>
       <h1 style="margin:12px 0 8px;color:#ffffff;font-size:26px;font-weight:300;">Tu viaje es mañana</h1>
-      <p style="margin:0;color:rgba(255,255,255,0.6);font-size:14px;">Te recordamos los detalles de tu reserva.</p>
+      <p style="margin:0;color:rgba(255,255,255,0.6);font-size:14px;">En menos de 24 horas empiezas tu viaje por el Caribe.</p>
     </div>
 
     <div style="background:#0A1628;padding:16px 40px;text-align:center;">
@@ -203,7 +203,7 @@ export async function sendReminderEmail(data: BookingEmailData) {
 
     <div style="padding:40px;">
       <p style="margin:0 0 24px;color:#4A5568;font-size:15px;line-height:1.6;">
-        Hola <strong style="color:#0A1628;">${data.customerName}</strong>, mañana es tu viaje con Teramont Private Rides. Aquí tienes todo lo que necesitas saber:
+        Hola <strong style="color:#0A1628;">${data.customerName}</strong>, mañana empieza tu viaje con Teramont Private Rides. Esto es todo lo que necesitas saber:
       </p>
 
       <div style="background:#F8F6F2;border-radius:12px;padding:24px;margin-bottom:20px;">

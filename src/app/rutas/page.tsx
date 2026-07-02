@@ -10,14 +10,14 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Rutas y Tarifas',
   description:
-    'Consulta todas las rutas disponibles de traslado privado en la Costa Caribe: Cartagena, Barú, Barranquilla. Precios fijos por vehículo, sin cargos ocultos.',
+    'Vive el Caribe a tu ritmo: rutas de traslado privado entre Cartagena, Barú y Barranquilla. Precios fijos por vehículo, sin cargos ocultos.',
   alternates: {
     canonical: 'https://teramont.seitonhome.com/rutas',
   },
   openGraph: {
     title: 'Rutas y Tarifas | Teramont Private Rides',
     description:
-      'Traslados privados Cartagena ↔ Barranquilla, Cartagena ↔ Barú y más. Precio fijo por vehículo, hasta 5 pasajeros.',
+      'El Caribe sin filas ni sorpresas: traslados privados Cartagena ↔ Barranquilla, Cartagena ↔ Barú y más. Precio fijo por vehículo, hasta 5 pasajeros.',
     url: 'https://teramont.seitonhome.com/rutas',
   },
 }

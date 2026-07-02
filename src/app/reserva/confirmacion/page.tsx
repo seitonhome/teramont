@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { ConfirmationClient } from './ConfirmationClient'
 
 export const metadata = {
-  title: 'Reserva confirmada — Teramont Private Rides',
+  title: 'Tu viaje confirmado — Teramont Private Rides',
 }
 
 export default function ConfirmacionPage() {

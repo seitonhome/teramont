@@ -9,12 +9,12 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Preguntas Frecuentes',
   description:
-    'Resuelve tus dudas sobre el servicio de traslados privados Teramont: capacidad, equipaje, pagos, cancelaciones y más.',
+    'Resuelve tus dudas antes de reservar tu viaje privado con Teramont: capacidad, equipaje, pagos, cancelaciones y más.',
   alternates: { canonical: 'https://teramont.seitonhome.com/faq' },
   openGraph: {
     title: 'Preguntas Frecuentes | Teramont Private Rides',
     description:
-      'Todo lo que necesitas saber sobre nuestros traslados privados entre Cartagena, Barú y Barranquilla.',
+      'Todo lo que necesitas saber antes de vivir tu viaje privado entre Cartagena, Barú y Barranquilla.',
     url: 'https://teramont.seitonhome.com/faq',
   },
 }
