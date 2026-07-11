@@ -11,8 +11,8 @@ const schema = z.object({
   destination_location_id: z.string().min(1).nullable().optional(),
   starts_at: z.string().datetime({ offset: true }),
   ends_at: z.string().datetime({ offset: true }),
-  reason: z.string().max(200).optional(),
-  notes: z.string().max(1000).optional(),
+  reason: z.string().max(200).nullable().optional(),
+  notes: z.string().max(1000).nullable().optional(),
 })
 
 export async function GET(req: NextRequest) {
