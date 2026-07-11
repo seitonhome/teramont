@@ -274,6 +274,13 @@ export const translations = {
       customSub: 'Cotiza tu ruta personalizada',
       message: 'Hola, me interesa un viaje privado con Teramont Private Rides. ¿Me pueden ayudar?',
     },
+    vehicleLocation: {
+      liveLabel: 'En vivo',
+      available: 'El vehículo está ahora en {location}',
+      inService: 'El vehículo está en viaje ahora mismo',
+      unavailable: 'El vehículo no está disponible en este momento',
+      cta: 'Reservar ahora',
+    },
     myBooking: {
       label: 'Consulta',
       title: 'Consulta tu reserva',
@@ -558,6 +565,13 @@ export const translations = {
       customTitle: 'Different destination?',
       customSub: 'Get a custom route quote',
       message: 'Hello, I\'m interested in a private ride with Teramont Private Rides. Can you help me?',
+    },
+    vehicleLocation: {
+      liveLabel: 'Live',
+      available: 'The vehicle is now in {location}',
+      inService: 'The vehicle is on a trip right now',
+      unavailable: 'The vehicle is not available right now',
+      cta: 'Book now',
     },
     myBooking: {
       label: 'Look up booking',
