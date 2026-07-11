@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-import { generateTimeSlots } from '@/lib/availability'
+import { generateTimeSlots, resolveDefaultLocationId } from '@/lib/availability'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -72,6 +72,14 @@ export async function POST(req: NextRequest) {
     const minNoticeHours = parseInt(settings.min_booking_notice_hours || '6')
     const locationMode = settings.vehicle_location_mode || 'persistent'
 
+    const { data: locations } = await supabase.from('locations').select('*')
+    const defaultLocationId = resolveDefaultLocationId(
+      locationMode,
+      settings.default_start_location,
+      locations || [],
+      vehicle.default_location_id
+    )
+
     // Get confirmed bookings for date range
     const dateStart = new Date(`${date}T00:00:00-05:00`).toISOString()
     const dateEnd = new Date(`${date}T23:59:59-05:00`).toISOString()
@@ -96,7 +104,7 @@ export async function POST(req: NextRequest) {
       route,
       bookings || [],
       blocks || [],
-      vehicle.default_location_id,
+      defaultLocationId,
       locationMode,
       minNoticeHours
     )

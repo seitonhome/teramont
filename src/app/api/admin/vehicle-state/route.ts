@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
-import { getVehicleStateAt } from '@/lib/availability'
+import { getVehicleStateAt, resolveDefaultLocationId } from '@/lib/availability'
 import { toZonedTime } from 'date-fns-tz'
 
 const TIMEZONE = 'America/Bogota'
@@ -36,13 +36,21 @@ export async function GET(req: NextRequest) {
     const getLocationName = (id: string) =>
       locations.find((l: { id: string; name: string }) => l.id === id)?.name || 'Desconocido'
 
+    const locationMode = settings.vehicle_location_mode || 'persistent'
+    const defaultLocationId = resolveDefaultLocationId(
+      locationMode,
+      settings.default_start_location,
+      locations,
+      vehicle.default_location_id
+    )
+
     const now = new Date()
     const state = getVehicleStateAt(
       now,
       bookingsRes.data || [],
       blocksRes.data || [],
-      vehicle.default_location_id,
-      settings.vehicle_location_mode || 'persistent'
+      defaultLocationId,
+      locationMode
     )
 
     let stateLabel = ''

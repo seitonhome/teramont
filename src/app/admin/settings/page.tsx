@@ -138,7 +138,7 @@ export default function AdminSettingsPage() {
   if (loading) {
     return (
       <AdminGuard>
-        <div className="flex min-h-screen bg-slate-100">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100">
           <AdminSidebar />
           <main className="flex-1 flex items-center justify-center">
             <Loader2 size={28} className="animate-spin text-muted-foreground" />
@@ -150,7 +150,7 @@ export default function AdminSettingsPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8">
           <div className="flex items-center justify-between mb-6">

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-import { isSlotAvailable } from '@/lib/availability'
+import { isSlotAvailable, resolveDefaultLocationId } from '@/lib/availability'
 import { generateBookingCode } from '@/lib/utils'
 import { isSundayOrHoliday } from '@/lib/surcharge'
 import { addMinutes } from 'date-fns'
@@ -89,6 +89,14 @@ export async function POST(req: NextRequest) {
     const sundaySurchargePct = parseInt(settings.sunday_surcharge_pct || '10')
     const locationMode = settings.vehicle_location_mode || 'persistent'
 
+    const { data: locations } = await supabase.from('locations').select('*')
+    const defaultLocationId = resolveDefaultLocationId(
+      locationMode,
+      settings.default_start_location,
+      locations || [],
+      vehicle.default_location_id
+    )
+
     // Validate future date limit
     const pickupDate = new Date(data.pickup_datetime)
     const now = new Date()
@@ -119,7 +127,7 @@ export async function POST(req: NextRequest) {
       route,
       existingBookings || [],
       blocks || [],
-      vehicle.default_location_id,
+      defaultLocationId,
       locationMode,
       minNoticeHours
     )

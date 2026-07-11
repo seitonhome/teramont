@@ -5,12 +5,15 @@ import { AdminGuard } from '@/components/admin/AdminGuard'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { Badge } from '@/components/ui/badge'
 import { formatCOP, formatDatetimeBogota } from '@/lib/utils'
-import { Calendar, DollarSign, Clock, CheckCircle, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Calendar, DollarSign, Clock, CheckCircle, Loader2, Undo2 } from 'lucide-react'
 import type { Booking } from '@/types'
 import { format } from 'date-fns'
 import { toZonedTime } from 'date-fns-tz'
+import { toast } from '@/hooks/use-toast'
 
 const TIMEZONE = 'America/Bogota'
+const CARTAGENA_ID = '11111111-1111-1111-1111-111111111111'
 
 const STATUS_LABELS: Record<string, { label: string; variant: 'default' | 'success' | 'warning' | 'destructive' | 'secondary' | 'outline' | 'gold' }> = {
   CONFIRMED: { label: 'Confirmada', variant: 'success' },
@@ -28,6 +31,9 @@ export default function DashboardPage() {
   const [bookings, setBookings] = useState<(Booking & { origin: { name: string }; destination: { name: string } })[]>([])
   const [loading, setLoading] = useState(true)
   const [vehicleState, setVehicleState] = useState<string>('Cargando...')
+  const [vehicleLocationId, setVehicleLocationId] = useState<string>('')
+  const [vehicleStatus, setVehicleStatus] = useState<string>('')
+  const [returningVehicle, setReturningVehicle] = useState(false)
 
   useEffect(() => {
     fetchData()
@@ -48,9 +54,40 @@ export default function DashboardPage() {
       if (vRes.ok) {
         const data = await vRes.json()
         setVehicleState(data.state_label || 'Disponible')
+        setVehicleLocationId(data.state?.location_id || '')
+        setVehicleStatus(data.state?.status || '')
       }
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function handleReturnToBase() {
+    setReturningVehicle(true)
+    try {
+      const now = new Date()
+      const res = await fetch('/api/admin/blocks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          block_type: 'REPOSITIONING',
+          origin_location_id: vehicleLocationId || null,
+          destination_location_id: CARTAGENA_ID,
+          starts_at: new Date(now.getTime() - 60000).toISOString(),
+          ends_at: now.toISOString(),
+          reason: 'Regreso a base (botón rápido)',
+        }),
+      })
+
+      if (res.ok) {
+        toast({ title: 'Vehículo marcado en Cartagena' })
+        await fetchData()
+      } else {
+        const data = await res.json()
+        toast({ title: data.error || 'Error al registrar el regreso', variant: 'destructive' })
+      }
+    } finally {
+      setReturningVehicle(false)
     }
   }
 
@@ -65,7 +102,7 @@ export default function DashboardPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8 overflow-auto">
           <div className="mb-8">
@@ -102,6 +139,18 @@ export default function DashboardPage() {
               </div>
               <p className="text-sm font-semibold text-foreground leading-snug">{vehicleState}</p>
               <p className="text-xs text-muted-foreground mt-1">estado actual</p>
+              {vehicleStatus === 'available' && vehicleLocationId && vehicleLocationId !== CARTAGENA_ID && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="mt-3 w-full text-xs"
+                  disabled={returningVehicle}
+                  onClick={handleReturnToBase}
+                >
+                  {returningVehicle ? <Loader2 size={14} className="animate-spin" /> : <Undo2 size={14} />}
+                  Ya volví a Cartagena
+                </Button>
+              )}
             </div>
 
             <div className="bg-white rounded-xl border border-slate-200 p-5">

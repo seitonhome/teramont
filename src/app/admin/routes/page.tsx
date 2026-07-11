@@ -78,7 +78,7 @@ export default function AdminRoutesPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8">
           <h1 className="text-2xl font-semibold text-foreground mb-6">Rutas y precios</h1>

@@ -6,6 +6,45 @@ const TIMEZONE = 'America/Bogota'
 const SLOT_INTERVAL_MINUTES = 30
 const DAY_START_HOUR = 6
 const DAY_END_HOUR = 20
+const RESET_HOUR = 5
+
+/**
+ * Most recent occurrence of RESET_HOUR (Bogota time) at or before `moment`.
+ * In reset_daily mode, bookings/blocks that ended before this point are
+ * ignored — the vehicle is assumed to already be back at its base location.
+ */
+function getMostRecentReset(moment: Date): Date {
+  const zoned = toZonedTime(moment, TIMEZONE)
+  const resetToday = fromZonedTime(
+    new Date(zoned.getFullYear(), zoned.getMonth(), zoned.getDate(), RESET_HOUR, 0, 0),
+    TIMEZONE
+  )
+  if (isBefore(moment, resetToday)) {
+    return fromZonedTime(
+      new Date(zoned.getFullYear(), zoned.getMonth(), zoned.getDate() - 1, RESET_HOUR, 0, 0),
+      TIMEZONE
+    )
+  }
+  return resetToday
+}
+
+/**
+ * Resolve which location_id a mode's "default" fallback should point to.
+ * In reset_daily mode this is the configured default_start_location slug;
+ * otherwise it's the vehicle's static default_location_id.
+ */
+export function resolveDefaultLocationId(
+  locationMode: string,
+  defaultStartLocationSlug: string | undefined,
+  locations: Location[],
+  vehicleDefaultLocationId: string
+): string {
+  if (locationMode === 'reset_daily' && defaultStartLocationSlug) {
+    const match = locations.find((l) => l.slug === defaultStartLocationSlug)
+    if (match) return match.id
+  }
+  return vehicleDefaultLocationId
+}
 
 export interface TimeSlot {
   time: string
@@ -105,11 +144,18 @@ export function getVehicleStateAt(
   // Find last completed event before now
   let lastLocationId = defaultLocationId
 
+  // In reset_daily mode, events that ended before the last reset point
+  // don't count — the vehicle is assumed to already be back at base.
+  const resetPoint = locationMode === 'reset_daily' ? getMostRecentReset(now) : null
+
   // Check bookings that ended before now
-  const pastBookings = sortedBookings.filter(b =>
+  let pastBookings = sortedBookings.filter(b =>
     isBefore(new Date(b.vehicle_release_datetime), now) ||
     isEqual(new Date(b.vehicle_release_datetime), now)
   )
+  if (resetPoint) {
+    pastBookings = pastBookings.filter(b => !isBefore(new Date(b.vehicle_release_datetime), resetPoint))
+  }
 
   if (pastBookings.length > 0) {
     const lastBooking = pastBookings[pastBookings.length - 1]
@@ -117,9 +163,12 @@ export function getVehicleStateAt(
   }
 
   // Check blocks that ended before now
-  const pastBlocks = vehicleBlocks.filter(b =>
+  let pastBlocks = vehicleBlocks.filter(b =>
     isBefore(new Date(b.ends_at), now) || isEqual(new Date(b.ends_at), now)
   )
+  if (resetPoint) {
+    pastBlocks = pastBlocks.filter(b => !isBefore(new Date(b.ends_at), resetPoint))
+  }
   if (pastBlocks.length > 0) {
     const lastBlock = pastBlocks.sort((a, b) =>
       new Date(b.ends_at).getTime() - new Date(a.ends_at).getTime()

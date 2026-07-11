@@ -85,7 +85,7 @@ export default function AdminCalendarPage() {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-slate-100">
+      <div className="flex flex-col lg:flex-row min-h-screen bg-slate-100">
         <AdminSidebar />
         <main className="flex-1 p-6 lg:p-8 overflow-auto">
           {/* Header */}
