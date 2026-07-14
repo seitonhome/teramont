@@ -42,6 +42,8 @@ export async function Routes() {
           { id: '4', from: 'Barú', to: 'Cartagena', duration: 105, price: 150000, slug: 'baru-cartagena' },
           { id: '5', from: 'Barranquilla', to: 'Barú', duration: 225, price: 550000, slug: 'barranquilla-baru' },
           { id: '6', from: 'Barú', to: 'Barranquilla', duration: 225, price: 550000, slug: 'baru-barranquilla' },
+          { id: '7', from: 'Cartagena', to: 'Santa Marta', duration: 240, price: 620000, slug: 'cartagena-santa-marta' },
+          { id: '8', from: 'Santa Marta', to: 'Cartagena', duration: 240, price: 620000, slug: 'santa-marta-cartagena' },
         ]
 
   const normalizeRoute = (route: Record<string, unknown>) => {

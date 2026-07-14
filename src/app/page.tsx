@@ -45,6 +45,7 @@ const localBusinessSchema = {
     { '@type': 'City', name: 'Cartagena de Indias' },
     { '@type': 'City', name: 'Barranquilla' },
     { '@type': 'Place', name: 'Barú' },
+    { '@type': 'City', name: 'Santa Marta' },
   ],
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
@@ -141,6 +142,20 @@ const localBusinessSchema = {
           provider: { '@type': 'LocalBusiness', '@id': `${BASE}/#organization` },
         },
         price: '550000',
+        priceCurrency: 'COP',
+        availability: 'https://schema.org/InStock',
+        url: `${BASE}/reservar`,
+      },
+      {
+        '@type': 'Offer',
+        name: 'Traslado privado Cartagena — Santa Marta',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Traslado privado Cartagena a Santa Marta',
+          serviceType: 'Transporte privado',
+          provider: { '@type': 'LocalBusiness', '@id': `${BASE}/#organization` },
+        },
+        price: '620000',
         priceCurrency: 'COP',
         availability: 'https://schema.org/InStock',
         url: `${BASE}/reservar`,

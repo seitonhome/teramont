@@ -1,4 +1,4 @@
-export type LocationSlug = 'cartagena' | 'barranquilla' | 'baru'
+export type LocationSlug = 'cartagena' | 'barranquilla' | 'baru' | 'santa-marta'
 
 export type BookingStatus =
   | 'DRAFT'

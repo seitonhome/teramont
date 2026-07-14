@@ -50,6 +50,7 @@ export const translations = {
       highlights: {
         'cartagena-barranquilla': 'Ruta más popular',
         'cartagena-baru': 'Paraíso caribeño',
+        'cartagena-santa-marta': 'Nuevo destino',
       },
       descriptions: {
         'cartagena-barranquilla': 'Sales de tu hotel en Cartagena y el siguiente parqueadero es tu destino en Barranquilla. Sin filas de terminal, sin arrastrar maletas de más, sin depender del horario de nadie más que el tuyo.',
@@ -58,6 +59,8 @@ export const translations = {
         'baru-cartagena': 'El regreso sin complicarte: te recogemos en Barú y te dejamos en la puerta exacta que necesites en Cartagena, con la arena todavía en los pies.',
         'barranquilla-baru': 'De la ciudad al paraíso sin escalas ni transbordos. Te buscamos en Barranquilla y el mar te espera al llegar a Barú.',
         'baru-barranquilla': 'De vuelta con todo — maletas, recuerdos y arena incluida. Te recogemos en Barú y te dejamos directo en tu destino en Barranquilla.',
+        'cartagena-santa-marta': 'De tu hotel en Cartagena directo a la Sierra Nevada y el mar de Santa Marta, sin paradas ni terminales de por medio. Un solo tramo, todo el Caribe.',
+        'santa-marta-cartagena': 'De regreso a Cartagena sin complicaciones: te recogemos en Santa Marta y te dejamos en la puerta exacta que necesites, sin compartir el trayecto con nadie.',
       },
       customDestTitle: '¿Quieres ir a otro destino?',
       customDestSub: 'Diseñamos tu recorrido a cualquier punto de la costa Caribe. Escríbenos y lo armamos juntos.',
@@ -342,6 +345,7 @@ export const translations = {
       highlights: {
         'cartagena-barranquilla': 'Most popular',
         'cartagena-baru': 'Caribbean paradise',
+        'cartagena-santa-marta': 'New destination',
       },
       descriptions: {
         'cartagena-barranquilla': 'You leave your hotel in Cartagena and the next parking lot is your destination in Barranquilla. No terminal lines, no extra luggage hauling, no depending on anyone\'s schedule but your own.',
@@ -350,6 +354,8 @@ export const translations = {
         'baru-cartagena': 'The easy way back: we pick you up in Barú and drop you at the exact door you need in Cartagena, sand still on your feet.',
         'barranquilla-baru': 'From the city to paradise, no stops or transfers. We pick you up in Barranquilla and the sea is waiting when you reach Barú.',
         'baru-barranquilla': 'Back with everything — luggage, memories and sand included. We pick you up in Barú and take you straight to your destination in Barranquilla.',
+        'cartagena-santa-marta': 'From your hotel in Cartagena straight to the Sierra Nevada and the sea in Santa Marta, no stops or terminals in between. One stretch, all the Caribbean.',
+        'santa-marta-cartagena': 'Back to Cartagena without the hassle: we pick you up in Santa Marta and drop you at the exact door you need, no sharing the ride with anyone.',
       },
       customDestTitle: 'Going somewhere else?',
       customDestSub: 'We design your route to any point on the Caribbean Coast. Message us and we\'ll build it together.',
