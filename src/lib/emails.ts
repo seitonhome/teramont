@@ -1,11 +1,12 @@
 import { Resend } from 'resend'
 import { formatCOP } from '@/lib/utils'
+import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from '@/lib/contact'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const FROM = 'Teramont Private Rides <noreply@seitonhome.com>'
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'servicioalcliente@seitonhome.com'
-const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573145445117'
+const WHATSAPP = WHATSAPP_NUMBER
 
 interface BookingEmailData {
   bookingCode: string
@@ -149,7 +150,7 @@ export async function sendCustomerConfirmationEmail(data: BookingEmailData) {
         <a href="${whatsappUrl}" style="display:inline-block;background:#25D366;color:#ffffff;text-decoration:none;padding:14px 32px;border-radius:6px;font-size:15px;font-weight:600;font-family:Arial,sans-serif;">
           📱 Confirmar por WhatsApp
         </a>
-        <p style="margin:12px 0 0;color:#9CA3AF;font-size:12px;">Guarda el número +57 314 544 5117</p>
+        <p style="margin:12px 0 0;color:#9CA3AF;font-size:12px;">Guarda el número ${WHATSAPP_DISPLAY}</p>
       </div>
 
       <!-- Cancellation -->

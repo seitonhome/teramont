@@ -5,10 +5,11 @@ import { useState, useEffect } from 'react'
 import { MessageCircle, Mail } from 'lucide-react'
 import { getLocaleClient } from '@/lib/locale'
 import { translations } from '@/lib/i18n'
+import { WHATSAPP_NUMBER } from '@/lib/contact'
 
 export function Footer() {
   const [locale, setLocale] = useState<'es' | 'en'>('es')
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
+  const whatsappNumber = WHATSAPP_NUMBER
   const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'hola@teramontrides.com'
 
   useEffect(() => {

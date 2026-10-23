@@ -3,6 +3,7 @@ import { Navbar } from '@/components/landing/Navbar'
 import { Footer } from '@/components/landing/Footer'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, ArrowRight, MessageCircle } from 'lucide-react'
+import { WHATSAPP_NUMBER } from '@/lib/contact'
 
 export const metadata = {
   title: 'No pudimos completar la reserva',
@@ -10,7 +11,7 @@ export const metadata = {
 }
 
 export default function ReservaErrorPage() {
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
+  const whatsapp = WHATSAPP_NUMBER
 
   return (
     <>

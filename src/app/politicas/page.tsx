@@ -2,6 +2,7 @@ import { Navbar } from '@/components/landing/Navbar'
 import { Footer } from '@/components/landing/Footer'
 import { getLocale } from '@/lib/locale-server'
 import { translations } from '@/lib/i18n'
+import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from '@/lib/contact'
 
 export const dynamic = 'force-dynamic'
 
@@ -151,7 +152,7 @@ export default async function PoliticasPage() {
                 <h3 className="font-semibold text-foreground mb-2">1. Responsable del tratamiento</h3>
                 <p>
                   <strong className="text-foreground">Teramont Private Rides</strong>, con domicilio en la ciudad de Cartagena de Indias, Colombia.
-                  Contacto: <a href="mailto:servicioalcliente@seitonhome.com" className="text-gold hover:underline">servicioalcliente@seitonhome.com</a> · WhatsApp: +57 314 544 5117.
+                  Contacto: <a href="mailto:servicioalcliente@seitonhome.com" className="text-gold hover:underline">servicioalcliente@seitonhome.com</a> · WhatsApp: {WHATSAPP_DISPLAY}.
                 </p>
               </div>
 
@@ -206,7 +207,7 @@ export default async function PoliticasPage() {
                 </p>
                 <ul className="list-disc list-inside mt-2 space-y-1 ml-2">
                   <li>Correo electrónico: <a href="mailto:servicioalcliente@seitonhome.com" className="text-gold hover:underline">servicioalcliente@seitonhome.com</a></li>
-                  <li>WhatsApp: <a href="https://wa.me/573145445117" target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">+57 314 544 5117</a></li>
+                  <li>WhatsApp: <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="text-gold hover:underline">{WHATSAPP_DISPLAY}</a></li>
                 </ul>
                 <p className="mt-3">
                   Daremos respuesta a las solicitudes en un plazo máximo de <strong className="text-foreground">10 días hábiles</strong>, de acuerdo con lo establecido en la legislación colombiana de protección de datos personales.

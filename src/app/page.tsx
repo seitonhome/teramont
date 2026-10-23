@@ -11,6 +11,7 @@ import { FAQSection } from '@/components/landing/FAQ'
 import { Footer } from '@/components/landing/Footer'
 import { CarGallery } from '@/components/landing/CarGallery'
 import { VehicleLocationBadge } from '@/components/landing/VehicleLocationBadge'
+import { PHONE_E164 } from '@/lib/contact'
 
 const BASE = 'https://teramont.seitonhome.com'
 
@@ -22,7 +23,7 @@ const localBusinessSchema = {
   description:
     'Servicio de traslados privados premium en Volkswagen Teramont 2024 entre Cartagena, Barú, Barranquilla y Santa Marta. Puerta a puerta, sin compartir vehículo, confirmación inmediata.',
   url: BASE,
-  telephone: '+573145445117',
+  telephone: PHONE_E164,
   email: 'servicioalcliente@seitonhome.com',
   logo: `${BASE}/android-chrome-192x192.png`,
   image: [`${BASE}/og-teramont.jpg`, `${BASE}/t2.jpg`, `${BASE}/t3.jpg`],

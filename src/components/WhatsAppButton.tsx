@@ -5,8 +5,9 @@ import { MessageCircle } from 'lucide-react'
 import { getLocaleClient } from '@/lib/locale'
 import { translations } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
+import { WHATSAPP_NUMBER } from '@/lib/contact'
 
-const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
+const WHATSAPP = WHATSAPP_NUMBER
 
 export function WhatsAppButton() {
   const [locale, setLocale] = useState<Locale>('es')

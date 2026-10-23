@@ -5,6 +5,7 @@ import { formatCOP, minutesToHoursLabel } from '@/lib/utils'
 import { createServiceClient } from '@/lib/supabase/server'
 import { getLocale } from '@/lib/locale-server'
 import { translations } from '@/lib/i18n'
+import { WHATSAPP_NUMBER } from '@/lib/contact'
 
 async function getRoutes() {
   try {
@@ -28,7 +29,7 @@ async function getRoutes() {
 export async function Routes() {
   const locale = await getLocale()
   const r = translations[locale].routes
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
+  const whatsappNumber = WHATSAPP_NUMBER
 
   const routes = await getRoutes()
 

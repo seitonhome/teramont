@@ -10,8 +10,9 @@ import { formatCOP, formatDatetimeBogota, buildWhatsAppLink } from '@/lib/utils'
 import { Loader2, Search, CheckCircle, XCircle, Flag, Download, AlertOctagon, MessageCircle } from 'lucide-react'
 import type { Booking } from '@/types'
 import { toast } from '@/hooks/use-toast'
+import { WHATSAPP_NUMBER } from '@/lib/contact'
 
-const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
+const WHATSAPP = WHATSAPP_NUMBER
 
 const STATUS_LABELS: Record<string, { label: string; variant: 'default' | 'success' | 'warning' | 'destructive' | 'secondary' | 'outline' | 'gold' }> = {
   CONFIRMED: { label: 'Confirmada', variant: 'success' },
