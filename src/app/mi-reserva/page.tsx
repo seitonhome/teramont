@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Navbar } from '@/components/landing/Navbar'
 import { Footer } from '@/components/landing/Footer'
 import { Button } from '@/components/ui/button'
@@ -200,6 +201,14 @@ export default function MyBookingPage() {
                   </div>
                 )}
               </div>
+
+              {result.booking.status === 'COMPLETED' && (
+                <Button asChild className="w-full bg-gold hover:bg-gold/90 text-white h-11">
+                  <Link href={`/resena?codigo=${encodeURIComponent(result.booking.booking_code)}`}>
+                    {translations[locale].footer.links.review}
+                  </Link>
+                </Button>
+              )}
             </div>
           )}
         </div>

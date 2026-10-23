@@ -81,7 +81,7 @@ export function Footer() {
               {f.routesTitle}
             </p>
             <ul className="space-y-2 text-sm">
-              {['Cartagena → Barranquilla', 'Barranquilla → Cartagena', 'Cartagena → Barú', 'Barú → Cartagena', 'Barranquilla → Barú', 'Barú → Barranquilla'].map((r) => (
+              {['Cartagena → Barranquilla', 'Barranquilla → Cartagena', 'Cartagena → Barú', 'Barú → Cartagena', 'Barranquilla → Barú', 'Barú → Barranquilla', 'Cartagena → Santa Marta', 'Santa Marta → Cartagena'].map((r) => (
                 <li key={r}>
                   <Link href="/reservar" className="hover:text-gold transition-colors">{r}</Link>
                 </li>
@@ -101,6 +101,7 @@ export function Footer() {
               <li><Link href="/politicas#terminos" className="hover:text-gold transition-colors">{f.links.terms}</Link></li>
               <li><Link href="/politicas#privacidad" className="hover:text-gold transition-colors">{f.links.privacy}</Link></li>
               <li><Link href="/mi-reserva" className="hover:text-gold transition-colors">{f.links.myBooking}</Link></li>
+              <li><Link href="/resena" className="hover:text-gold transition-colors">{f.links.review}</Link></li>
               <li><a href={`mailto:${contactEmail}`} className="hover:text-gold transition-colors">{contactEmail}</a></li>
             </ul>
           </div>

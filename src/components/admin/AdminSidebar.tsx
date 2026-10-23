@@ -11,6 +11,7 @@ import {
   Route,
   Lock,
   Settings,
+  Star,
   LogOut,
   Car,
   Menu,
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/admin/bookings', label: 'Reservas', icon: List },
   { href: '/admin/routes', label: 'Rutas', icon: Route },
   { href: '/admin/blocks', label: 'Bloqueos', icon: Lock },
+  { href: '/admin/reviews', label: 'Reseñas', icon: Star },
   { href: '/admin/settings', label: 'Configuración', icon: Settings },
 ]
 

@@ -352,3 +352,51 @@ export async function sendAdminNotificationEmail(data: BookingEmailData) {
     html,
   })
 }
+
+// Customer-written text goes into HTML: escape it
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+export async function sendAdminReviewNotification(data: {
+  name: string
+  location: string
+  rating: number
+  text: string
+  verified: boolean
+}) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://teramont.seitonhome.com'
+  const stars = '★'.repeat(data.rating) + '☆'.repeat(5 - data.rating)
+  const html = `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#F8F6F2;font-family:Arial,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;">
+    <div style="background:#0A1628;padding:24px 32px;">
+      <p style="margin:0;color:#C19436;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">⭐ Nueva reseña por aprobar</p>
+    </div>
+    <div style="padding:32px;">
+      <p style="margin:0 0 8px;color:#C19436;font-size:20px;letter-spacing:2px;">${stars}</p>
+      <p style="margin:0 0 16px;color:#0A1628;font-size:15px;line-height:1.6;">&ldquo;${escapeHtml(data.text)}&rdquo;</p>
+      <p style="margin:0;color:#374151;font-size:14px;font-weight:700;">${escapeHtml(data.name)}${data.location ? ` · ${escapeHtml(data.location)}` : ''}</p>
+      <p style="margin:4px 0 24px;color:${data.verified ? '#16a34a' : '#6B7280'};font-size:12px;">${data.verified ? '✔ Viaje verificado con código de reserva' : 'Sin código de reserva verificado'}</p>
+      <a href="${baseUrl}/admin/reviews" style="display:inline-block;background:#C19436;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:700;font-size:14px;">Revisar y aprobar</a>
+      <p style="margin:24px 0 0;color:#9CA3AF;font-size:12px;">No se publica en el sitio hasta que la apruebes.</p>
+    </div>
+  </div>
+</body>
+</html>`
+
+  return resend.emails.send({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `⭐ Nueva reseña de ${data.name} (${data.rating}/5) — por aprobar`,
+    html,
+  })
+}
