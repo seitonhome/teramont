@@ -39,6 +39,17 @@ export function VehicleLocationBadge() {
   const [status, setStatus] = useState<VehicleStatus | null>(null)
   const [locationName, setLocationName] = useState<string | null>(null)
   const [dismissed, setDismissed] = useState(true)
+  // Appears once the visitor scrolls past the hero so it never covers the main CTA
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.6) setScrolled(true)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     setLocale(getLocaleClient())
@@ -55,7 +66,7 @@ export function VehicleLocationBadge() {
       .catch(() => setStatus(null))
   }, [])
 
-  if (!status || dismissed) return null
+  if (!status || dismissed || !scrolled) return null
 
   const vl = translations[locale].vehicleLocation
   const style = STATUS_STYLES[status]
@@ -69,7 +80,7 @@ export function VehicleLocationBadge() {
 
   return (
     <div
-      className="fixed bottom-6 left-6 z-40 max-w-[290px]"
+      className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 max-w-[calc(100vw-6.5rem)] sm:max-w-[290px]"
       style={{ animation: 'vehicleBadgeIn 0.35s ease-out' }}
     >
       <div
@@ -86,11 +97,12 @@ export function VehicleLocationBadge() {
             sessionStorage.setItem(DISMISS_KEY, '1')
             setDismissed(true)
           }}
-          className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-white/80 hover:text-white"
-          style={{ background: '#0A1628', border: '1px solid rgba(255,255,255,0.2)' }}
-          aria-label="Cerrar"
+          className="absolute -top-3 -right-3 w-8 h-8 flex items-center justify-center text-white/80 hover:text-white"
+          aria-label={locale === 'en' ? 'Close' : 'Cerrar'}
         >
-          <X size={11} />
+          <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: '#0A1628', border: '1px solid rgba(255,255,255,0.2)' }}>
+            <X size={11} />
+          </span>
         </button>
 
         <span

@@ -24,10 +24,10 @@ export const metadata: Metadata = {
 
   title: {
     template: '%s | Teramont Private Rides',
-    default: 'Teramont Private Rides — Traslados Privados Cartagena · Barú · Barranquilla',
+    default: 'Transporte privado en Cartagena y el Caribe | Teramont Private Rides',
   },
   description:
-    'Vive el Caribe a tu ritmo: traslados privados en Volkswagen Teramont 2024 entre Cartagena, Barú y Barranquilla. Solo tú y tu grupo, puerta a puerta, con confirmación inmediata y pago seguro.',
+    'Traslados privados en Volkswagen Teramont 2024 entre Cartagena, Barú, Barranquilla y Santa Marta. Precio fijo por vehículo, puerta a puerta, reserva online y pago seguro.',
 
   keywords: [
     'transporte privado Cartagena',
@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     'private transfer Cartagena Colombia',
     'private transport Caribbean coast Colombia',
     'traslado aeropuerto Cartagena',
+    'traslado privado Cartagena Santa Marta',
     'transporte ejecutivo Cartagena',
   ],
 
@@ -59,11 +60,13 @@ export const metadata: Metadata = {
     locale: 'es_CO',
     title: 'Teramont Private Rides — Traslados Privados en la Costa Caribe',
     description:
-      'El Caribe a tu ritmo: Cartagena, Barú y Barranquilla en tu propia Volkswagen Teramont 2024. Privado, puntual y sin compartir con nadie.',
+      'El Caribe a tu ritmo: Cartagena, Barú, Barranquilla y Santa Marta en tu propia Volkswagen Teramont 2024. Privado, puntual y sin compartir con nadie.',
     images: [
       {
-        url: '/t1.jpg',
-        alt: 'Volkswagen Teramont 2024 — Teramont Private Rides',
+        url: '/og-teramont.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Volkswagen Teramont 2024 frente a la Torre del Reloj de Cartagena',
       },
     ],
   },
@@ -72,8 +75,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Teramont Private Rides — Traslados Privados Costa Caribe',
     description:
-      'El Caribe a tu ritmo. Traslados privados entre Cartagena, Barú y Barranquilla en Volkswagen Teramont 2024. Reserva online en minutos.',
-    images: ['/t1.jpg'],
+      'El Caribe a tu ritmo. Traslados privados entre Cartagena, Barú, Barranquilla y Santa Marta en Volkswagen Teramont 2024. Reserva online en minutos.',
+    images: ['/og-teramont.jpg'],
   },
 
   icons: {
@@ -83,12 +86,12 @@ export const metadata: Metadata = {
       { url: '/favicon.ico' },
     ],
     apple: '/apple-touch-icon.png',
-    other: [
-      { rel: 'android-chrome-192', url: '/android-chrome-192x192.png' },
-      { rel: 'android-chrome-512', url: '/android-chrome-512x512.png' },
-    ],
   },
   manifest: '/site.webmanifest',
+
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+    verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION },
+  }),
 
   other: {
     'geo.region': 'CO-BOL',

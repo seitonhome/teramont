@@ -4,7 +4,7 @@ import { BookingPageClient } from './BookingPageClient'
 export const metadata = {
   title: 'Reservar Traslado Privado',
   description:
-    'Asegura tu viaje privado entre Cartagena, Barú y Barranquilla en minutos. Disponibilidad en tiempo real, confirmación inmediata y pago seguro con Wompi.',
+    'Asegura tu viaje privado entre Cartagena, Barú, Barranquilla y Santa Marta en minutos. Disponibilidad en tiempo real, confirmación inmediata y pago seguro con Wompi.',
   alternates: { canonical: 'https://teramont.seitonhome.com/reservar' },
   openGraph: {
     title: 'Reservar Traslado Privado | Teramont Private Rides',

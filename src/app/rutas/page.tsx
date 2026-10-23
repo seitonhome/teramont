@@ -10,14 +10,14 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Rutas y Tarifas',
   description:
-    'Vive el Caribe a tu ritmo: rutas de traslado privado entre Cartagena, Barú y Barranquilla. Precios fijos por vehículo, sin cargos ocultos.',
+    'Vive el Caribe a tu ritmo: rutas de traslado privado entre Cartagena, Barú, Barranquilla y Santa Marta. Precios fijos por vehículo, sin cargos ocultos.',
   alternates: {
     canonical: 'https://teramont.seitonhome.com/rutas',
   },
   openGraph: {
     title: 'Rutas y Tarifas | Teramont Private Rides',
     description:
-      'El Caribe sin filas ni sorpresas: traslados privados Cartagena ↔ Barranquilla, Cartagena ↔ Barú y más. Precio fijo por vehículo, hasta 5 pasajeros.',
+      'El Caribe sin filas ni sorpresas: traslados privados Cartagena ↔ Barranquilla, Cartagena ↔ Barú, Cartagena ↔ Santa Marta y más. Precio fijo por vehículo, hasta 5 pasajeros.',
     url: 'https://teramont.seitonhome.com/rutas',
   },
 }
@@ -63,6 +63,18 @@ const rutasSchema = {
         provider: { '@type': 'LocalBusiness', name: 'Teramont Private Rides', url: 'https://teramont.seitonhome.com' },
         areaServed: [{ '@type': 'City', name: 'Barranquilla' }, { '@type': 'Place', name: 'Barú' }],
         offers: { '@type': 'Offer', price: '550000', priceCurrency: 'COP', url: 'https://teramont.seitonhome.com/reservar' },
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      item: {
+        '@type': 'Service',
+        name: 'Traslado privado Cartagena — Santa Marta',
+        description: 'Traslado privado en Volkswagen Teramont de Cartagena a Santa Marta. Precio fijo por vehículo, hasta 5 pasajeros, puerta a puerta.',
+        provider: { '@type': 'LocalBusiness', name: 'Teramont Private Rides', url: 'https://teramont.seitonhome.com' },
+        areaServed: [{ '@type': 'City', name: 'Cartagena' }, { '@type': 'City', name: 'Santa Marta' }],
+        offers: { '@type': 'Offer', price: '620000', priceCurrency: 'COP', url: 'https://teramont.seitonhome.com/reservar' },
       },
     },
   ],

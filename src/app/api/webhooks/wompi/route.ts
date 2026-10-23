@@ -38,7 +38,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true })
     }
 
-    const mappedStatus = mapWompiStatus(wompiStatus)
+    let mappedStatus = mapWompiStatus(wompiStatus)
+
+    // Never confirm a booking for less money than we asked for
+    if (mappedStatus === 'APPROVED' && Math.round(amountInCents) < Math.round(Number(payment.amount_cop) * 100)) {
+      console.error(`Wompi amount mismatch for ${reference}: got ${amountInCents} cents, expected ${payment.amount_cop} COP`)
+      mappedStatus = 'ERROR'
+    }
 
     // Update payment
     await supabase

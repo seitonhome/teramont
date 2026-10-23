@@ -8,6 +8,24 @@ const WOMPI_BASE_URL =
     ? 'https://production.wompi.co/v1'
     : 'https://sandbox.wompi.co/v1'
 
+// Only the fields the confirmation page shows: never email, phone or notes.
+function publicBooking(b: Record<string, unknown>) {
+  return {
+    id: b.id,
+    booking_code: b.booking_code,
+    status: b.status,
+    payment_status: b.payment_status,
+    pickup_datetime: b.pickup_datetime,
+    estimated_arrival_datetime: b.estimated_arrival_datetime,
+    pickup_address: b.pickup_address,
+    dropoff_address: b.dropoff_address,
+    passengers_count: b.passengers_count,
+    total_price_cop: b.total_price_cop,
+    deposit_amount_cop: b.deposit_amount_cop,
+    balance_amount_cop: b.balance_amount_cop,
+  }
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
@@ -48,7 +66,7 @@ export async function GET(req: NextRequest) {
       booking.status === 'CONFIRMED' ||
       booking.status === 'PAID_FULL'
     ) {
-      return NextResponse.json({ status: 'APPROVED', booking })
+      return NextResponse.json({ status: 'APPROVED', booking: publicBooking(booking) })
     }
 
     // Query Wompi for the current transaction status
@@ -61,7 +79,7 @@ export async function GET(req: NextRequest) {
     )
 
     if (!wompiRes.ok) {
-      return NextResponse.json({ status: 'PENDING', booking })
+      return NextResponse.json({ status: 'PENDING', booking: publicBooking(booking) })
     }
 
     const wompiData = await wompiRes.json()
@@ -72,12 +90,18 @@ export async function GET(req: NextRequest) {
     const latest = approved || transactions[transactions.length - 1]
 
     if (!latest) {
-      return NextResponse.json({ status: 'PENDING', booking })
+      return NextResponse.json({ status: 'PENDING', booking: publicBooking(booking) })
     }
 
-    const mappedStatus = mapWompiStatus(latest.status as string)
     const transactionId = latest.id as string
     const amountInCents = latest.amount_in_cents as number
+    let mappedStatus = mapWompiStatus(latest.status as string)
+
+    // Never confirm a booking for less money than we asked for
+    if (mappedStatus === 'APPROVED' && Math.round(amountInCents) < Math.round(Number(payment.amount_cop) * 100)) {
+      console.error(`Wompi amount mismatch for ${reference}: got ${amountInCents} cents, expected ${payment.amount_cop} COP`)
+      mappedStatus = 'ERROR'
+    }
 
     // Update payment record
     await supabase
@@ -128,7 +152,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json({
         status: 'APPROVED',
-        booking: { ...booking, status: newBookingStatus, payment_status: 'APPROVED' },
+        booking: { ...publicBooking(booking), status: newBookingStatus, payment_status: 'APPROVED' },
       })
     }
 
@@ -138,7 +162,7 @@ export async function GET(req: NextRequest) {
         .update({ status: 'PAYMENT_FAILED', payment_status: mappedStatus })
         .eq('id', booking.id as string)
 
-      return NextResponse.json({ status: mappedStatus, booking })
+      return NextResponse.json({ status: mappedStatus, booking: publicBooking(booking) })
     }
 
     if (mappedStatus === 'VOIDED') {
@@ -147,10 +171,10 @@ export async function GET(req: NextRequest) {
         .update({ status: 'EXPIRED', payment_status: 'VOIDED' })
         .eq('id', booking.id as string)
 
-      return NextResponse.json({ status: 'VOIDED', booking })
+      return NextResponse.json({ status: 'VOIDED', booking: publicBooking(booking) })
     }
 
-    return NextResponse.json({ status: mappedStatus, booking })
+    return NextResponse.json({ status: mappedStatus, booking: publicBooking(booking) })
   } catch (err) {
     console.error('Wompi verify error:', err)
     return NextResponse.json({ error: 'Error verificando pago' }, { status: 500 })

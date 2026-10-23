@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient, isAdminRequest } from '@/lib/supabase/server'
 import { z } from 'zod'
 
 const patchSchema = z.object({
@@ -14,9 +14,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const authClient = await createClient()
-    const { data: { session } } = await authClient.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    if (!(await isAdminRequest())) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
 
     const { id } = await params
     const body = await req.json()

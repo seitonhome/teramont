@@ -4,7 +4,8 @@ import { sendReminderEmail } from '@/lib/emails'
 
 export async function GET(req: NextRequest) {
   const secret = req.headers.get('authorization')
-  if (secret !== `Bearer ${process.env.CRON_SECRET}`) {
+  // Without CRON_SECRET the expected header would be "Bearer undefined"
+  if (!process.env.CRON_SECRET || secret !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

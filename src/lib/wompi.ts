@@ -111,14 +111,10 @@ export function verifyWompiWebhookSignature(
       properties?: string[]
     } | undefined
 
-    // En producción siempre exigimos checksum
+    // Wompi siempre firma sus eventos (sandbox y producción): sin checksum se rechaza
     if (!signature?.checksum) {
-      if (IS_PRODUCTION) {
-        console.warn('Webhook sin checksum en producción — rechazado')
-        return false
-      }
-      // En sandbox podemos permitir sin checksum para pruebas locales
-      return true
+      console.warn('Webhook de Wompi sin checksum — rechazado')
+      return false
     }
 
     const properties = signature.properties || []
@@ -143,12 +139,12 @@ export function verifyWompiWebhookSignature(
       .update(hashInput)
       .digest('hex')
 
-    const valid = expectedChecksum === signature.checksum
+    const received = String(signature.checksum).toLowerCase()
+    const valid =
+      received.length === expectedChecksum.length &&
+      crypto.timingSafeEqual(Buffer.from(received), Buffer.from(expectedChecksum))
     if (!valid) {
-      console.warn('Wompi webhook checksum mismatch', {
-        expected: expectedChecksum,
-        received: signature.checksum,
-      })
+      console.warn('Wompi webhook checksum mismatch')
     }
     return valid
   } catch (err) {

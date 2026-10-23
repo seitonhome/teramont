@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient, isAdminRequest } from '@/lib/supabase/server'
 import { formatDatetimeBogota } from '@/lib/utils'
 
 export async function GET(req: NextRequest) {
   try {
-    const authClient = await createClient()
-    const { data: { session } } = await authClient.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    if (!(await isAdminRequest())) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
 
     const supabase = createServiceClient()
     const { data, error } = await supabase

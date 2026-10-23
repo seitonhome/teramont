@@ -14,7 +14,7 @@ export const metadata = {
   openGraph: {
     title: 'Preguntas Frecuentes | Teramont Private Rides',
     description:
-      'Todo lo que necesitas saber antes de vivir tu viaje privado entre Cartagena, Barú y Barranquilla.',
+      'Todo lo que necesitas saber antes de vivir tu viaje privado entre Cartagena, Barú, Barranquilla y Santa Marta.',
     url: 'https://teramont.seitonhome.com/faq',
   },
 }

@@ -4,6 +4,11 @@ import { Footer } from '@/components/landing/Footer'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, ArrowRight, MessageCircle } from 'lucide-react'
 
+export const metadata = {
+  title: 'No pudimos completar la reserva',
+  robots: { index: false, follow: false },
+}
+
 export default function ReservaErrorPage() {
   const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '573001234567'
 

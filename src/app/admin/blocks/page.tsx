@@ -120,8 +120,7 @@ export default function AdminBlocksPage() {
 
   async function deleteBlock(id: string) {
     if (!confirm('¿Eliminar este bloqueo?')) return
-    const supabase = (await import('@/lib/supabase/client')).createClient()
-    await supabase.from('vehicle_blocks').delete().eq('id', id)
+    await fetch(`/api/admin/blocks?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
     fetchBlocks()
   }
 

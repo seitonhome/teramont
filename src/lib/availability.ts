@@ -1,4 +1,4 @@
-import { addMinutes, startOfDay, isAfter, isBefore, isEqual, parseISO } from 'date-fns'
+import { addMinutes, isAfter, isBefore, isEqual } from 'date-fns'
 import { toZonedTime, fromZonedTime } from 'date-fns-tz'
 import type { Booking, VehicleBlock, Route, Location, VehicleState } from '@/types'
 
@@ -7,6 +7,16 @@ const SLOT_INTERVAL_MINUTES = 30
 const DAY_START_HOUR = 6
 const DAY_END_HOUR = 20
 const RESET_HOUR = 5
+// Unpaid bookings hold the vehicle only this long; after that the slot frees up
+// so abandoned checkouts (or spam) can't block the calendar indefinitely.
+const PENDING_PAYMENT_HOLD_MINUTES = 60
+
+function blocksVehicle(b: Booking, now: Date = new Date()): boolean {
+  if (b.status === 'CONFIRMED' || b.status === 'PAID_FULL') return true
+  if (b.status !== 'PENDING_PAYMENT') return false
+  if (!b.created_at) return true
+  return addMinutes(new Date(b.created_at), PENDING_PAYMENT_HOLD_MINUTES) > now
+}
 
 /**
  * Most recent occurrence of RESET_HOUR (Bogota time) at or before `moment`.
@@ -88,11 +98,7 @@ export function getVehicleStateAt(
 
   // Sort bookings by pickup datetime
   const sortedBookings = [...confirmedBookings]
-    .filter(b =>
-      b.status === 'CONFIRMED' ||
-      b.status === 'PAID_FULL' ||
-      b.status === 'PENDING_PAYMENT'
-    )
+    .filter(b => blocksVehicle(b))
     .sort((a, b) =>
       new Date(a.pickup_datetime).getTime() - new Date(b.pickup_datetime).getTime()
     )
@@ -252,11 +258,7 @@ export function isSlotAvailable(
   const vehicleRelease = addMinutes(estimatedArrival, route.buffer_minutes)
 
   // Check if the booking would overlap with any confirmed booking
-  const activeBookings = confirmedBookings.filter(b =>
-    b.status === 'CONFIRMED' ||
-    b.status === 'PAID_FULL' ||
-    b.status === 'PENDING_PAYMENT'
-  )
+  const activeBookings = confirmedBookings.filter(b => blocksVehicle(b))
 
   for (const booking of activeBookings) {
     const existingPickup = new Date(booking.pickup_datetime)

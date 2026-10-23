@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { createServiceClient, getAdminUser, isAdminRequest } from '@/lib/supabase/server'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -17,9 +17,7 @@ const schema = z.object({
 
 export async function GET(req: NextRequest) {
   try {
-    const authClient = await createClient()
-    const { data: { session } } = await authClient.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    if (!(await isAdminRequest())) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
 
     const supabase = createServiceClient()
     const { data, error } = await supabase
@@ -40,9 +38,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const authClient = await createClient()
-    const { data: { session } } = await authClient.auth.getSession()
-    if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    const admin = await getAdminUser()
+    if (!admin) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
 
     const body = await req.json()
     const parsed = schema.safeParse(body)
@@ -66,7 +63,7 @@ export async function POST(req: NextRequest) {
       .insert({
         ...parsed.data,
         vehicle_id: vehicle.id,
-        created_by: session.user.id,
+        created_by: admin.id,
       })
       .select()
       .single()
@@ -76,6 +73,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ block: data }, { status: 201 })
   } catch (err) {
     console.error('Admin blocks POST error:', err)
+    return NextResponse.json({ error: 'Error interno' }, { status: 500 })
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    if (!(await isAdminRequest())) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+
+    const id = new URL(req.url).searchParams.get('id')
+    if (!id) return NextResponse.json({ error: 'id requerido' }, { status: 400 })
+
+    const supabase = createServiceClient()
+    const { error } = await supabase.from('vehicle_blocks').delete().eq('id', id)
+    if (error) throw error
+
+    return NextResponse.json({ deleted: true })
+  } catch (err) {
+    console.error('Admin blocks DELETE error:', err)
     return NextResponse.json({ error: 'Error interno' }, { status: 500 })
   }
 }
